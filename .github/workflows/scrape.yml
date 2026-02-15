@@ -1,0 +1,57 @@
+name: Northstar Scrape
+
+on:
+  schedule:
+    - cron: '0 7 * * *'    # 2 AM ET
+    - cron: '0 15 * * *'   # 10 AM ET
+    - cron: '0 23 * * *'   # 6 PM ET
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+          playwright install-deps
+
+      - name: Run scraper
+        run: python run.py --headless --html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: gh-pages
+
+      - name: Commit latest data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/latest.json
+          git diff --staged --quiet || git commit -m "data: scan $(date -u +%Y-%m-%d_%H-%M)"
+          git push
+
+      - name: Upload data artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-data-${{ github.run_id }}
+          path: data/
+          retention-days: 30

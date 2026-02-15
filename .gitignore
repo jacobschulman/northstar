@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.venv/
+venv/
+
+# Playwright
+playwright-report/
+
+# Data (tracked separately via latest.json only)
+data/20*/
+scraper.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backup files (not part of the app)
+1.*/
+2.*/
+backup*
+*copy.py
+*copy 2.py
+
+# Test files
+test_output.json
+multi_flight_test.json
+discovered_flights.json
+test*.py
+triptest.py
+
+# Streamlit
+.streamlit/

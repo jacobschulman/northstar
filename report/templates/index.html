@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Northstar — United Seat Availability</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Northstar — United Seat Availability</h1>
+      <div class="subtitle">Last updated: {{ generated_at }}</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="label">Routes</div>
+        <div class="value">{{ routes | length }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Flights</div>
+        <div class="value">{{ flights | length }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Best Bets</div>
+        <div class="value" style="color: var(--green)">{{ best_bets | length }}</div>
+      </div>
+    </div>
+
+    {% if best_bets %}
+    <div class="section">
+      <h2>Best Bets — Polaris Delta &ge; 3</h2>
+
+      <div class="filters">
+        <button class="filter-btn active" onclick="filterHub('all')">All</button>
+        {% for hub in hubs %}
+        <button class="filter-btn" onclick="filterHub('{{ hub }}')">{{ hub }}</button>
+        {% endfor %}
+      </div>
+
+      <div class="filters" style="margin-top: 0.25rem;">
+        <span style="font-size: 0.75rem; color: var(--text-dim); margin-right: 0.25rem;">Columns:</span>
+        <button class="filter-btn active" data-col="col-aircraft" onclick="toggleCol(this)">Aircraft</button>
+        <button class="filter-btn active" data-col="col-pp" onclick="toggleCol(this)">Prem Plus</button>
+        <button class="filter-btn active" data-col="col-econ" onclick="toggleCol(this)">Economy</button>
+      </div>
+
+      <table id="best-bets-table">
+        <thead>
+          <tr>
+            <th onclick="sortTable('best-bets-table', 0)">Route</th>
+            <th onclick="sortTable('best-bets-table', 1)">Flight</th>
+            <th onclick="sortTable('best-bets-table', 2)">Date</th>
+            <th onclick="sortTable('best-bets-table', 3)">Depart</th>
+            <th onclick="sortTable('best-bets-table', 4, true)" style="font-weight:800">J Delta</th>
+            <th onclick="sortTable('best-bets-table', 5)">J Avail</th>
+            <th onclick="sortTable('best-bets-table', 6)">J SB</th>
+            <th onclick="sortTable('best-bets-table', 7)" class="col-aircraft">Aircraft</th>
+            <th onclick="sortTable('best-bets-table', 8)" class="col-pp">PP Avail</th>
+            <th onclick="sortTable('best-bets-table', 9)" class="col-pp">PP SB</th>
+            <th onclick="sortTable('best-bets-table', 10)" class="col-econ">Y Avail</th>
+            <th onclick="sortTable('best-bets-table', 11)" class="col-econ">Y SB</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for f in best_bets %}
+          <tr class="row-best" data-hub="{{ f.departure_airport }}">
+            <td><a class="route-link" href="routes/{{ f.route }}.html">{{ f.route }}</a></td>
+            <td>{{ f.flight_number }}</td>
+            <td>{{ f.flight_date }}</td>
+            <td>{{ f.departure_time }}</td>
+            <td class="delta-positive" style="font-weight:800; font-size:1rem">+{{ f.polaris_delta }}</td>
+            <td>{{ f.polaris_available }}/{{ f.polaris_capacity }}</td>
+            <td>{{ f.polaris_standby }}</td>
+            <td class="col-aircraft">{{ f.aircraft_type | replace("Boeing ", "") | replace("Airbus ", "") | truncate(20) }}</td>
+            <td class="col-pp">{{ f.premium_plus_available }}/{{ f.premium_plus_capacity }}</td>
+            <td class="col-pp">{{ f.premium_plus_standby }}</td>
+            <td class="col-econ">{{ f.economy_available }}/{{ f.economy_capacity }}</td>
+            <td class="col-econ">{{ f.economy_standby }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    <div class="section">
+      <h2>All Routes</h2>
+      <div class="route-index">
+        {% for route_key, route_flights in routes.items() | sort %}
+        {% set best_delta = route_flights | map(attribute='polaris_delta') | max %}
+        <a href="routes/{{ route_key }}.html" style="text-decoration: none; color: inherit;">
+          <div class="route-card">
+            <div>
+              <div class="route-name">{{ route_key }}</div>
+              <div class="route-stats">{{ route_flights | length }} flights</div>
+            </div>
+            <div>
+              {% if best_delta >= 3 %}
+              <span class="delta-positive">+{{ best_delta }}</span>
+              {% elif best_delta >= 0 %}
+              <span class="delta-neutral">{{ best_delta }}</span>
+              {% else %}
+              <span class="delta-negative">{{ best_delta }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="timestamp">Generated by Northstar | {{ generated_at }}</div>
+
+  <script>
+  function filterHub(hub) {
+    document.querySelectorAll('.filters:first-of-type .filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('#best-bets-table tbody tr').forEach(row => {
+      if (hub === 'all' || row.dataset.hub === hub) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  function toggleCol(btn) {
+    btn.classList.toggle('active');
+    const colClass = btn.dataset.col;
+    const visible = btn.classList.contains('active');
+    document.querySelectorAll('.' + colClass).forEach(el => {
+      el.style.display = visible ? '' : 'none';
+    });
+  }
+
+  function sortTable(tableId, col, desc) {
+    const table = document.getElementById(tableId);
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const dir = desc ? -1 : 1;
+    rows.sort((a, b) => {
+      let va = a.cells[col].textContent.trim();
+      let vb = b.cells[col].textContent.trim();
+      const na = parseFloat(va.replace('+', ''));
+      const nb = parseFloat(vb.replace('+', ''));
+      if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
+      return va.localeCompare(vb) * dir;
+    });
+    rows.forEach(r => tbody.appendChild(r));
+  }
+  </script>
+</body>
+</html>
