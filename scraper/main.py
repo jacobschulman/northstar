@@ -9,6 +9,7 @@ import asyncio
 import json
 import logging
 import sys
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -164,6 +165,7 @@ async def run_scraper(
     errors: List[Dict] = []
     skipped = 0
     run_timestamp = datetime.utcnow().isoformat() + "Z"
+    run_start = time.time()
 
     try:
         routes = config.get("routes", [])
@@ -175,28 +177,47 @@ async def run_scraper(
             route_names = [f"{r['origin']}-{r['destination']}" for r in routes]
             logger.info(f"Filtered to {len(routes)} routes: {route_names}")
 
-        logger.info(f"Starting scrape: {len(routes)} routes, {days_ahead} days ahead, force_refresh={force_refresh}")
+        existing_count = len(latest_data.get("flights", {}))
+        logger.info("=" * 70)
+        logger.info("NORTHSTAR SCRAPE STARTING")
+        logger.info(f"  Routes: {len(routes)} | Days ahead: {days_ahead} | Force refresh: {force_refresh}")
+        logger.info(f"  Existing flights in latest.json: {existing_count}")
+        logger.info(f"  Headless: {headless} | Context TTL: {context_ttl}")
+        logger.info("=" * 70)
 
         for route_idx, route in enumerate(routes):
             origin = route["origin"]
             dest = route["destination"]
             route_key = f"{origin}-{dest}"
             consecutive_failures = 0
+            route_start = time.time()
+            route_scraped = 0
+            route_skipped = 0
+            route_errors = 0
 
-            logger.info(f"[{route_idx + 1}/{len(routes)}] Route: {route_key}")
+            pct = ((route_idx) / len(routes)) * 100
+            logger.info("")
+            logger.info(f"{'=' * 50}")
+            logger.info(f"[{route_idx + 1}/{len(routes)}] {route_key}  ({pct:.0f}% complete)")
+            logger.info(f"{'=' * 50}")
 
             for day_offset in range(days_ahead):
                 target_date = datetime.now() + timedelta(days=day_offset)
                 date_str = target_date.strftime("%Y-%m-%d")
+                day_name = target_date.strftime("%a")
+
+                logger.info(f"  {route_key} | {date_str} ({day_name}) — discovering flights...")
 
                 # Discover flights on this route+date
-                nonstop_flights, _ = await auto_discover_flights(
+                nonstop_flights, connections = await auto_discover_flights(
                     browser, origin, dest, target_date
                 )
 
                 if not nonstop_flights:
-                    logger.info(f"  No flights found for {route_key} on {date_str}")
+                    logger.info(f"  {route_key} | {date_str} — no nonstop UA flights")
                     continue
+
+                logger.info(f"  {route_key} | {date_str} — found {len(nonstop_flights)} flights: UA{', UA'.join(str(f) for f in nonstop_flights)}")
 
                 for flight_num in nonstop_flights:
                     flight_key = f"UA{flight_num}_{date_str}"
@@ -204,6 +225,8 @@ async def run_scraper(
                     # Check tiered refresh logic
                     if not should_scrape_flight(flight_key, target_date, latest_data, force_refresh):
                         skipped += 1
+                        route_skipped += 1
+                        logger.info(f"    UA{flight_num} {date_str} — skipped (data still fresh)")
                         continue
 
                     # Retry loop
@@ -219,12 +242,23 @@ async def run_scraper(
                             all_flights.append(result)
                             limiter.record_success()
                             consecutive_failures = 0
+                            route_scraped += 1
 
                             # Merge into latest data
                             latest_data.setdefault("flights", {})[flight_key] = {
                                 "flight_data": result.to_dict(),
                                 "last_scraped": run_timestamp,
                             }
+
+                            # Verbose per-flight result
+                            j = result
+                            logger.info(
+                                f"    UA{flight_num} {date_str} — "
+                                f"J: {j.polaris_available}/{j.polaris_capacity} (delta:{j.polaris_delta:+d}, UG:{j.polaris_upgrade_count}, SA:{j.polaris_sa_count}) | "
+                                f"PP: {j.premium_plus_available}/{j.premium_plus_capacity} | "
+                                f"Y: {j.economy_available}/{j.economy_capacity} | "
+                                f"{j.aircraft_type}"
+                            )
 
                             success = True
                             break
@@ -233,25 +267,30 @@ async def run_scraper(
                             consecutive_failures += 1
 
                             if attempt < MAX_RETRIES:
-                                logger.info(f"  Retrying UA{flight_num} (attempt {attempt + 2}/{MAX_RETRIES + 1})")
+                                logger.warning(f"    UA{flight_num} {date_str} — FAILED, retrying ({attempt + 2}/{MAX_RETRIES + 1})...")
                                 await asyncio.sleep(10)
 
                     if not success:
+                        route_errors += 1
                         errors.append({
                             "flight": f"UA{flight_num}",
                             "date": date_str,
                             "route": route_key,
                         })
+                        logger.error(f"    UA{flight_num} {date_str} — FAILED after {MAX_RETRIES + 1} attempts")
 
                     # Abort route on too many consecutive failures
                     if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
                         logger.error(
-                            f"  Aborting {route_key}: {consecutive_failures} consecutive failures"
+                            f"  ABORTING {route_key}: {consecutive_failures} consecutive failures"
                         )
                         break
 
                 if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
                     break
+
+            route_elapsed = time.time() - route_start
+            logger.info(f"  {route_key} done: {route_scraped} scraped, {route_skipped} skipped, {route_errors} errors ({route_elapsed:.0f}s)")
 
             # Delay between routes
             if route_idx < len(routes) - 1:
@@ -280,10 +319,45 @@ async def run_scraper(
     with open(ts_dir / "flights.json", 'w') as f:
         json.dump([fd.to_dict() for fd in all_flights], f, indent=2)
 
-    logger.info(
-        f"Scrape complete: {len(all_flights)} scraped, {skipped} skipped (fresh), "
-        f"{len(errors)} errors"
+    run_elapsed = time.time() - run_start
+    total_in_latest = len(latest_data.get("flights", {}))
+
+    # Print final summary
+    logger.info("")
+    logger.info("=" * 70)
+    logger.info("NORTHSTAR SCRAPE COMPLETE")
+    logger.info("=" * 70)
+    logger.info(f"  Duration:         {run_elapsed / 60:.1f} minutes ({run_elapsed:.0f}s)")
+    logger.info(f"  Flights scraped:  {len(all_flights)}")
+    logger.info(f"  Flights skipped:  {skipped} (data still fresh)")
+    logger.info(f"  Errors:           {len(errors)}")
+    logger.info(f"  Total in latest:  {total_in_latest} flights across all routes")
+    logger.info(f"  Data saved to:    {ts_dir}/")
+
+    if errors:
+        logger.info("")
+        logger.info(f"  Failed flights:")
+        for err in errors[:20]:
+            logger.info(f"    {err['flight']} {err['date']} ({err['route']})")
+        if len(errors) > 20:
+            logger.info(f"    ... and {len(errors) - 20} more")
+
+    # Show best bets from this run
+    best = sorted(
+        [f for f in all_flights if f.polaris_delta >= 3 and not f.departed],
+        key=lambda f: f.polaris_delta, reverse=True,
     )
+    if best:
+        logger.info("")
+        logger.info(f"  BEST BETS (Polaris delta >= 3):")
+        for f in best[:15]:
+            logger.info(
+                f"    {f.route:<9} UA{f.flight_number.replace('UA',''):<5} {f.flight_date}  "
+                f"J: {f.polaris_available}/{f.polaris_capacity} delta:{f.polaris_delta:+d}  "
+                f"{f.aircraft_type}"
+            )
+
+    logger.info("=" * 70)
 
     return all_flights
 
