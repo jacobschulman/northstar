@@ -14,7 +14,11 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        hub: [EWR, SFO, ORD, IAD, IAH]
+      fail-fast: false  # Don't cancel other hubs if one fails
     env:
       PYTHONUNBUFFERED: "1"
 
@@ -33,8 +37,49 @@ jobs:
           playwright install chromium
           playwright install-deps
 
-      - name: Run scraper
-        run: python run.py --headless --html
+      - name: Scrape ${{ matrix.hub }} hub
+        run: python run.py --headless --hub ${{ matrix.hub }}
+
+      - name: Upload hub data
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hub-data-${{ matrix.hub }}
+          path: data/hub_${{ matrix.hub }}.json
+          retention-days: 7
+
+  report:
+    needs: scrape
+    if: always()  # Run even if some hub jobs failed
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download all hub data
+        uses: actions/download-artifact@v4
+        with:
+          pattern: hub-data-*
+          path: data/
+          merge-multiple: true
+
+      - name: List downloaded data
+        run: ls -la data/
+
+      - name: Merge hub data and generate report
+        run: python run.py --merge-only --html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -51,7 +96,7 @@ jobs:
           git diff --staged --quiet || git commit -m "data: scan $(date -u +%Y-%m-%d_%H-%M)"
           git push
 
-      - name: Upload data artifact
+      - name: Upload merged data artifact
         uses: actions/upload-artifact@v4
         with:
           name: scan-data-${{ github.run_id }}

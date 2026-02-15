@@ -1,0 +1,55 @@
+name: Debug Single Route
+
+on:
+  workflow_dispatch:
+    inputs:
+      route:
+        description: 'Route to test (e.g. EWR-LHR)'
+        required: true
+        default: 'EWR-LHR'
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+          playwright install-deps
+
+      - name: Test connectivity to united.com
+        run: |
+          echo "=== Testing basic connectivity ==="
+          curl -s -o /dev/null -w "HTTP %{http_code} | IP %{remote_ip} | Time %{time_total}s\n" https://www.united.com
+          echo ""
+          echo "=== Testing flight status page ==="
+          curl -s -o /dev/null -w "HTTP %{http_code} | Time %{time_total}s\n" "https://www.united.com/en/us/flightstatus/results/route/$(date +%Y-%m-%d)/EWR/LHR/UA"
+
+      - name: Run single route scrape
+        run: python run.py --headless --routes ${{ github.event.inputs.route }} --force-refresh
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-logs
+          path: |
+            scraper.log
+            data/
+          retention-days: 7

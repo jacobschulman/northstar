@@ -134,6 +134,7 @@ async def run_scraper(
     routes_filter: Optional[List[str]] = None,
     force_refresh: bool = False,
     headless: bool = True,
+    data_path: str = "data/latest.json",
 ) -> List[FlightData]:
     """Main scraper orchestration.
 
@@ -142,12 +143,13 @@ async def run_scraper(
         routes_filter: Optional list of specific routes to scrape (e.g. ["EWR-LHR", "SFO-NRT"])
         force_refresh: Bypass tiered staleness checks, re-scrape everything
         headless: Run browser in headless mode
+        data_path: Path to save flight data (e.g. data/latest.json or data/hub_EWR.json)
 
     Returns:
         List of all scraped FlightData objects from this run
     """
     config = load_config(config_path)
-    latest_data = load_latest_data()
+    latest_data = load_latest_data(data_path)
     latest_data = prune_departed(latest_data)
 
     days_ahead = config.get("days_ahead", 3)
@@ -214,10 +216,7 @@ async def run_scraper(
                 )
 
                 if not nonstop_flights:
-                    logger.info(f"  {route_key} | {date_str} — no nonstop UA flights")
                     continue
-
-                logger.info(f"  {route_key} | {date_str} — found {len(nonstop_flights)} flights: UA{', UA'.join(str(f) for f in nonstop_flights)}")
 
                 for flight_num in nonstop_flights:
                     flight_key = f"UA{flight_num}_{date_str}"
@@ -301,7 +300,7 @@ async def run_scraper(
 
     # Save latest data
     latest_data["last_updated"] = run_timestamp
-    save_latest_data(latest_data)
+    save_latest_data(latest_data, data_path=data_path)
 
     # Save timestamped snapshot
     ts_dir = Path("data") / datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
@@ -360,6 +359,64 @@ async def run_scraper(
     logger.info("=" * 70)
 
     return all_flights
+
+
+def merge_hub_data(data_dir: str = "data") -> Dict:
+    """Merge per-hub data files (hub_EWR.json, hub_SFO.json, etc.) into latest.json.
+
+    Each hub file has the same structure as latest.json. Merging combines all
+    flights, keeping the most recently scraped version of each flight.
+    """
+    data_path = Path(data_dir)
+    hub_files = sorted(data_path.glob("hub_*.json"))
+
+    if not hub_files:
+        logger.warning(f"No hub data files found in {data_dir}/")
+        return load_latest_data(str(data_path / "latest.json"))
+
+    logger.info(f"Merging {len(hub_files)} hub data files: {[f.name for f in hub_files]}")
+
+    merged: Dict = {"last_updated": None, "flights": {}}
+
+    for hub_file in hub_files:
+        try:
+            with open(hub_file) as f:
+                hub_data = json.load(f)
+        except Exception as e:
+            logger.error(f"Failed to load {hub_file}: {e}")
+            continue
+
+        hub_flights = hub_data.get("flights", {})
+        hub_updated = hub_data.get("last_updated")
+
+        for flight_key, entry in hub_flights.items():
+            existing = merged["flights"].get(flight_key)
+            if not existing:
+                merged["flights"][flight_key] = entry
+            else:
+                # Keep the more recently scraped version
+                existing_ts = existing.get("last_scraped", "")
+                new_ts = entry.get("last_scraped", "")
+                if new_ts > existing_ts:
+                    merged["flights"][flight_key] = entry
+
+        # Track the latest update timestamp across all hubs
+        if hub_updated and (not merged["last_updated"] or hub_updated > merged["last_updated"]):
+            merged["last_updated"] = hub_updated
+
+        logger.info(f"  {hub_file.name}: {len(hub_flights)} flights")
+
+    # Prune departed flights from merged data
+    merged = prune_departed(merged)
+
+    # Save merged latest.json
+    latest_path = str(data_path / "latest.json")
+    save_latest_data(merged, data_path=latest_path)
+
+    total = len(merged.get("flights", {}))
+    logger.info(f"Merged total: {total} flights saved to {latest_path}")
+
+    return merged
 
 
 def get_all_flights_from_latest(data_path: str = "data/latest.json") -> List[FlightData]:

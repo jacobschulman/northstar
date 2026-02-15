@@ -7,68 +7,71 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-  <header>
+
+  <header class="site-header">
     <div class="container">
-      <h1><a href="../index.html" style="color: white; text-decoration: none;">&larr; Northstar</a> — {{ route }}</h1>
-      <div class="subtitle">Last updated: {{ generated_at }}</div>
+      <a href="../index.html" class="back-link">&larr; Back to Dashboard</a>
+      <div class="route-header">
+        <h1 class="route-header__title">{{ origin }} &rarr; {{ destination }}</h1>
+        <span class="route-header__region">{{ region }}</span>
+      </div>
+      <p class="site-timestamp">Last updated: {{ generated_at }}</p>
     </div>
   </header>
 
-  <div class="container">
-    <div class="stats">
+  <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
+
+    <div class="stats-row">
       <div class="stat-card">
-        <div class="label">Flights</div>
-        <div class="value">{{ flights | length }}</div>
+        <div class="stat-card__label">Flights</div>
+        <div class="stat-card__value">{{ flights | length }}</div>
       </div>
       <div class="stat-card">
-        <div class="label">Best J Delta</div>
-        <div class="value" style="color: var(--green)">
+        <div class="stat-card__label">Best J Delta</div>
+        <div class="stat-card__value" style="color: var(--green)">
           {% set best = flights | map(attribute='polaris_delta') | max %}
           {% if best > 0 %}+{% endif %}{{ best }}
         </div>
       </div>
       <div class="stat-card">
-        <div class="label">Avg J Available</div>
-        <div class="value">
+        <div class="stat-card__label">Avg J Available</div>
+        <div class="stat-card__value">
           {{ (flights | map(attribute='polaris_available') | sum / flights | length) | round(1) }}
         </div>
       </div>
     </div>
 
-    <div class="section">
-      <h2>All Flights</h2>
-      <table id="route-table">
+    {% for day_group in flights_by_day %}
+    <div class="day-group">
+      <h2 class="day-group__heading">{{ day_group.label }} &mdash; {{ day_group.display }}</h2>
+      <table class="data-table" id="table-{{ loop.index }}">
         <thead>
           <tr>
-            <th onclick="sortTable('route-table', 0)">Flight</th>
-            <th onclick="sortTable('route-table', 1)">Date</th>
-            <th onclick="sortTable('route-table', 2)">Day</th>
-            <th onclick="sortTable('route-table', 3)">Depart</th>
-            <th onclick="sortTable('route-table', 4)">Arrive</th>
-            <th onclick="sortTable('route-table', 5)">Aircraft</th>
-            <th onclick="sortTable('route-table', 6)">J Avail</th>
-            <th onclick="sortTable('route-table', 7)">J Cap</th>
-            <th onclick="sortTable('route-table', 8)">J SB</th>
-            <th onclick="sortTable('route-table', 9, true)">J Delta</th>
-            <th onclick="sortTable('route-table', 10)">PP Avail</th>
-            <th onclick="sortTable('route-table', 11)">PP SB</th>
-            <th onclick="sortTable('route-table', 12)">Y Avail</th>
-            <th onclick="sortTable('route-table', 13)">Y SB</th>
+            <th>Flight</th>
+            <th>Depart</th>
+            <th>Arrive</th>
+            <th>Aircraft</th>
+            <th>J Avail</th>
+            <th>J Cap</th>
+            <th>J SB</th>
+            <th>J Delta</th>
+            <th>PP Avail</th>
+            <th>PP SB</th>
+            <th>Y Avail</th>
+            <th>Y SB</th>
           </tr>
         </thead>
         <tbody>
-          {% for f in flights %}
+          {% for f in day_group.flights %}
           <tr class="{% if f.polaris_delta >= 3 %}row-best{% elif f.polaris_delta < 0 %}row-trouble{% else %}row-ok{% endif %}">
             <td>{{ f.flight_number }}</td>
-            <td>{{ f.flight_date }}</td>
-            <td>{{ f.day_of_week[:3] }}</td>
             <td>{{ f.departure_time }}</td>
             <td>{{ f.arrival_time }}</td>
             <td>{{ f.aircraft_type | replace("Boeing ", "") | replace("Airbus ", "") | truncate(18) }}</td>
             <td>{{ f.polaris_available }}</td>
             <td>{{ f.polaris_capacity }}</td>
             <td>{{ f.polaris_standby }}</td>
-            <td class="{% if f.polaris_delta >= 3 %}delta-positive{% elif f.polaris_delta >= 0 %}delta-neutral{% else %}delta-negative{% endif %}">
+            <td class="{% if f.polaris_delta >= 3 %}delta-positive{% elif f.polaris_delta >= 0 %}delta-neutral{% else %}delta-negative{% endif %}" style="font-weight:800">
               {% if f.polaris_delta > 0 %}+{% endif %}{{ f.polaris_delta }}
             </td>
             <td>{{ f.premium_plus_available }}/{{ f.premium_plus_capacity }}</td>
@@ -80,26 +83,46 @@
         </tbody>
       </table>
     </div>
+    {% endfor %}
+
+    {% if not flights_by_day %}
+    <div class="empty-state">
+      <div class="empty-state__icon">&#9992;</div>
+      <p class="empty-state__title">No flights for {{ route }}</p>
+      <p class="empty-state__text">No availability data for this route. Check back after the next scrape.</p>
+    </div>
+    {% endif %}
   </div>
 
-  <div class="timestamp">Generated by Northstar | {{ generated_at }}</div>
+  <footer class="site-footer">
+    <p>Generated by Northstar | {{ generated_at }}</p>
+  </footer>
 
   <script>
-  function sortTable(tableId, col, desc) {
-    const table = document.getElementById(tableId);
-    const tbody = table.querySelector('tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    const dir = desc ? -1 : 1;
-    rows.sort((a, b) => {
-      let va = a.cells[col].textContent.trim();
-      let vb = b.cells[col].textContent.trim();
-      const na = parseFloat(va.replace('+', ''));
-      const nb = parseFloat(vb.replace('+', ''));
-      if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
-      return va.localeCompare(vb) * dir;
+  document.querySelectorAll('.data-table thead th').forEach(function(th, colIdx) {
+    th.addEventListener('click', function() {
+      var table = th.closest('table');
+      var tbody = table.querySelector('tbody');
+      var rows = Array.from(tbody.querySelectorAll('tr'));
+      var isAsc = th.classList.contains('sort-asc');
+
+      table.querySelectorAll('th').forEach(function(h) {
+        h.classList.remove('sort-asc', 'sort-desc');
+      });
+      th.classList.add(isAsc ? 'sort-desc' : 'sort-asc');
+
+      var dir = isAsc ? -1 : 1;
+      rows.sort(function(a, b) {
+        var va = a.cells[colIdx].textContent.trim();
+        var vb = b.cells[colIdx].textContent.trim();
+        var na = parseFloat(va.replace('+', '').replace('/', ''));
+        var nb = parseFloat(vb.replace('+', '').replace('/', ''));
+        if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
+        return va.localeCompare(vb) * dir;
+      });
+      rows.forEach(function(r) { tbody.appendChild(r); });
     });
-    rows.forEach(r => tbody.appendChild(r));
-  }
+  });
   </script>
 </body>
 </html>

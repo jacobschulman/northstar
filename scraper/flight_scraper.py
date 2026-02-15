@@ -150,10 +150,10 @@ async def scrape_flight(
 
     try:
         url = f"https://www.united.com/en/us/flightstatus/details/{flight_number}/{date_str}/{origin}/{destination}/UA#upgrades"
-        await browser.navigate(url, timeout=60000)
+        await browser.navigate(url, timeout=90000)
 
         # Wait for API response
-        await asyncio.sleep(4)
+        await asyncio.sleep(5)
 
         if api_data:
             flight_data = parse_flight_data(api_data, route)

@@ -9,11 +9,12 @@ from playwright.async_api import async_playwright, Browser, BrowserContext, Page
 logger = logging.getLogger(__name__)
 
 USER_AGENTS = [
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
 ]
 
 
@@ -74,20 +75,24 @@ class BrowserManager:
 
         # Warm up: visit homepage to establish cookies
         try:
-            await self._page.goto("https://www.united.com", timeout=60000)
-            await asyncio.sleep(random.uniform(1, 3))
+            await self._page.goto(
+                "https://www.united.com",
+                timeout=90000,
+                wait_until="domcontentloaded",
+            )
+            await asyncio.sleep(random.uniform(2, 5))
             logger.info("New browser context initialized")
         except Exception as e:
             logger.warning(f"Homepage warmup failed (non-fatal): {e}")
 
-    async def navigate(self, url: str, timeout: int = 60000) -> Page:
+    async def navigate(self, url: str, timeout: int = 90000) -> Page:
         """Navigate to URL with automatic crash recovery.
 
         Returns the page object (useful for setting up response listeners).
         """
         page = await self.get_page()
         try:
-            await page.goto(url, timeout=timeout)
+            await page.goto(url, timeout=timeout, wait_until="domcontentloaded")
             self._nav_count += 1
             return page
         except Exception as e:
@@ -95,7 +100,7 @@ class BrowserManager:
                 logger.warning("Context crashed, rotating and retrying...")
                 self._page = None  # Force rotation
                 page = await self.get_page()
-                await page.goto(url, timeout=timeout)
+                await page.goto(url, timeout=timeout, wait_until="domcontentloaded")
                 self._nav_count += 1
                 return page
             raise

@@ -7,151 +7,241 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
+
+  <!-- Header -->
+  <header class="site-header">
     <div class="container">
-      <h1>Northstar — United Seat Availability</h1>
-      <div class="subtitle">Last updated: {{ generated_at }}</div>
+      <h1 class="site-title">Northstar</h1>
+      <p class="site-subtitle">United Polaris Seat Availability</p>
+      <p class="site-timestamp">Last updated: {{ generated_at }}</p>
     </div>
   </header>
 
-  <div class="container">
-    <div class="stats">
-      <div class="stat-card">
-        <div class="label">Routes</div>
-        <div class="value">{{ routes | length }}</div>
+  <!-- Summary Strip -->
+  <div class="summary-strip">
+    <div class="container summary-strip__inner">
+      <div class="summary-stat">
+        <span class="summary-stat__value">{{ summary.total_best_bets }}</span>
+        <span class="summary-stat__label">Best Bets</span>
       </div>
-      <div class="stat-card">
-        <div class="label">Flights</div>
-        <div class="value">{{ flights | length }}</div>
+      <div class="summary-divider"></div>
+      {% for day in summary.days %}
+      <div class="summary-stat">
+        <span class="summary-stat__value">{{ day.best_bets }}</span>
+        <span class="summary-stat__label">{{ day.label }}</span>
       </div>
-      <div class="stat-card">
-        <div class="label">Best Bets</div>
-        <div class="value" style="color: var(--green)">{{ best_bets | length }}</div>
+      {% endfor %}
+      <div class="summary-divider"></div>
+      <div class="summary-stat">
+        <span class="summary-stat__value">{{ summary.total_flights }}</span>
+        <span class="summary-stat__label">Flights</span>
       </div>
-    </div>
-
-    {% if best_bets %}
-    <div class="section">
-      <h2>Best Bets — Polaris Delta &ge; 3</h2>
-
-      <div class="filters">
-        <button class="filter-btn active" onclick="filterHub('all')">All</button>
-        {% for hub in hubs %}
-        <button class="filter-btn" onclick="filterHub('{{ hub }}')">{{ hub }}</button>
-        {% endfor %}
-      </div>
-
-      <div class="filters" style="margin-top: 0.25rem;">
-        <span style="font-size: 0.75rem; color: var(--text-dim); margin-right: 0.25rem;">Columns:</span>
-        <button class="filter-btn active" data-col="col-aircraft" onclick="toggleCol(this)">Aircraft</button>
-        <button class="filter-btn active" data-col="col-pp" onclick="toggleCol(this)">Prem Plus</button>
-        <button class="filter-btn active" data-col="col-econ" onclick="toggleCol(this)">Economy</button>
-      </div>
-
-      <table id="best-bets-table">
-        <thead>
-          <tr>
-            <th onclick="sortTable('best-bets-table', 0)">Route</th>
-            <th onclick="sortTable('best-bets-table', 1)">Flight</th>
-            <th onclick="sortTable('best-bets-table', 2)">Date</th>
-            <th onclick="sortTable('best-bets-table', 3)">Depart</th>
-            <th onclick="sortTable('best-bets-table', 4, true)" style="font-weight:800">J Delta</th>
-            <th onclick="sortTable('best-bets-table', 5)">J Avail</th>
-            <th onclick="sortTable('best-bets-table', 6)">J SB</th>
-            <th onclick="sortTable('best-bets-table', 7)" class="col-aircraft">Aircraft</th>
-            <th onclick="sortTable('best-bets-table', 8)" class="col-pp">PP Avail</th>
-            <th onclick="sortTable('best-bets-table', 9)" class="col-pp">PP SB</th>
-            <th onclick="sortTable('best-bets-table', 10)" class="col-econ">Y Avail</th>
-            <th onclick="sortTable('best-bets-table', 11)" class="col-econ">Y SB</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for f in best_bets %}
-          <tr class="row-best" data-hub="{{ f.departure_airport }}">
-            <td><a class="route-link" href="routes/{{ f.route }}.html">{{ f.route }}</a></td>
-            <td>{{ f.flight_number }}</td>
-            <td>{{ f.flight_date }}</td>
-            <td>{{ f.departure_time }}</td>
-            <td class="delta-positive" style="font-weight:800; font-size:1rem">+{{ f.polaris_delta }}</td>
-            <td>{{ f.polaris_available }}/{{ f.polaris_capacity }}</td>
-            <td>{{ f.polaris_standby }}</td>
-            <td class="col-aircraft">{{ f.aircraft_type | replace("Boeing ", "") | replace("Airbus ", "") | truncate(20) }}</td>
-            <td class="col-pp">{{ f.premium_plus_available }}/{{ f.premium_plus_capacity }}</td>
-            <td class="col-pp">{{ f.premium_plus_standby }}</td>
-            <td class="col-econ">{{ f.economy_available }}/{{ f.economy_capacity }}</td>
-            <td class="col-econ">{{ f.economy_standby }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    {% endif %}
-
-    <div class="section">
-      <h2>All Routes</h2>
-      <div class="route-index">
-        {% for route_key, route_flights in routes.items() | sort %}
-        {% set best_delta = route_flights | map(attribute='polaris_delta') | max %}
-        <a href="routes/{{ route_key }}.html" style="text-decoration: none; color: inherit;">
-          <div class="route-card">
-            <div>
-              <div class="route-name">{{ route_key }}</div>
-              <div class="route-stats">{{ route_flights | length }} flights</div>
-            </div>
-            <div>
-              {% if best_delta >= 3 %}
-              <span class="delta-positive">+{{ best_delta }}</span>
-              {% elif best_delta >= 0 %}
-              <span class="delta-neutral">{{ best_delta }}</span>
-              {% else %}
-              <span class="delta-negative">{{ best_delta }}</span>
-              {% endif %}
-            </div>
-          </div>
-        </a>
-        {% endfor %}
+      <div class="summary-stat">
+        <span class="summary-stat__value">{{ summary.total_routes }}</span>
+        <span class="summary-stat__label">Routes</span>
       </div>
     </div>
   </div>
 
-  <div class="timestamp">Generated by Northstar | {{ generated_at }}</div>
+  <!-- Day Tabs (sticky) -->
+  <nav class="day-tabs" id="day-tabs">
+    <div class="container day-tabs__inner">
+      {% for day in days %}
+      <button
+        class="day-tab {% if day.index == 0 %}day-tab--active{% endif %}"
+        data-day="{{ day.index }}"
+        onclick="switchDay({{ day.index }})"
+      >
+        <span class="day-tab__label">{{ day.label }}</span>
+        <span class="day-tab__date">{{ day.display }}</span>
+        <span class="day-tab__badge {% if day.best_bet_count > 0 %}day-tab__badge--has-bets{% endif %}">
+          {{ day.best_bet_count }}
+        </span>
+      </button>
+      {% endfor %}
+    </div>
+  </nav>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="container filter-bar__inner">
+      <div class="filter-group">
+        <label class="filter-label" for="hub-filter">Hub</label>
+        <select id="hub-filter" class="filter-select" onchange="applyFilters()">
+          <option value="all">All Hubs</option>
+          {% for hub in hubs %}
+          <option value="{{ hub }}">{{ hub }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label" for="region-filter">Region</label>
+        <select id="region-filter" class="filter-select" onchange="applyFilters()">
+          <option value="all">All Regions</option>
+          {% for region in regions %}
+          <option value="{{ region }}">{{ region_display[region] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="toggle">
+          <input type="checkbox" id="best-bets-toggle" onchange="applyFilters()">
+          <span class="toggle__slider"></span>
+          <span class="toggle__label">Best bets only</span>
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label" for="sort-select">Sort</label>
+        <select id="sort-select" class="filter-select" onchange="applySort()">
+          <option value="delta-desc">Best J Delta</option>
+          <option value="route-asc">Route Name</option>
+          <option value="flights-desc">Flight Count</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day Panels -->
+  <main class="container main-content">
+    {% for day in days %}
+    <div
+      class="day-panel {% if day.index == 0 %}day-panel--active{% endif %}"
+      id="day-panel-{{ day.index }}"
+      data-day="{{ day.index }}"
+    >
+      {% if day.route_cards %}
+      <div class="route-list" id="route-list-{{ day.index }}">
+        {% for rc in day.route_cards %}
+        <div
+          class="route-group"
+          data-hub="{{ rc.hub }}"
+          data-region="{{ rc.region }}"
+          data-delta="{{ rc.best_delta }}"
+          data-route="{{ rc.route }}"
+          data-flights="{{ rc.flight_count }}"
+        >
+          <div class="route-group__header">
+            <div class="route-group__left">
+              <a href="routes/{{ rc.route }}.html" class="route-group__name">{{ rc.origin }} &rarr; {{ rc.destination }}</a>
+              <span class="route-group__meta">{{ rc.flight_count }} flight{{ 's' if rc.flight_count != 1 else '' }}</span>
+            </div>
+            <div class="route-group__best-delta route-group__best-delta--{{ rc.delta_class }}">
+              {% if rc.best_delta > 0 %}+{% endif %}{{ rc.best_delta }}
+            </div>
+          </div>
+          <div class="flight-table">
+            <div class="flight-table__header">
+              <span class="flight-col flight-col--flight">Flight</span>
+              <span class="flight-col flight-col--time">Departs</span>
+              <span class="flight-col flight-col--aircraft">Aircraft</span>
+              <span class="flight-col flight-col--delta">J Delta</span>
+              <span class="flight-col flight-col--avail">J Avail</span>
+              <span class="flight-col flight-col--sb">J SB</span>
+            </div>
+            {% for f in rc.flights %}
+            <div class="flight-row flight-row--{{ f.delta_class }}">
+              <span class="flight-col flight-col--flight">{{ f.flight_number }}</span>
+              <span class="flight-col flight-col--time">{{ f.departure_time }}</span>
+              <span class="flight-col flight-col--aircraft">{{ f.aircraft }}</span>
+              <span class="flight-col flight-col--delta delta-{{ f.delta_class }}">{% if f.polaris_delta > 0 %}+{% endif %}{{ f.polaris_delta }}</span>
+              <span class="flight-col flight-col--avail">{{ f.polaris_available }}/{{ f.polaris_capacity }}</span>
+              <span class="flight-col flight-col--sb">{{ f.polaris_standby }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <div class="empty-state__icon">&#9992;</div>
+        <p class="empty-state__title">No flights for {{ day.label }}</p>
+        <p class="empty-state__text">No availability data for {{ day.display }}. Check back after the next scrape.</p>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </main>
+
+  <footer class="site-footer">
+    <p>Generated by Northstar | {{ generated_at }}</p>
+  </footer>
 
   <script>
-  function filterHub(hub) {
-    document.querySelectorAll('.filters:first-of-type .filter-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-    document.querySelectorAll('#best-bets-table tbody tr').forEach(row => {
-      if (hub === 'all' || row.dataset.hub === hub) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
+  var currentDay = 0;
+
+  function switchDay(dayIndex) {
+    currentDay = dayIndex;
+    document.querySelectorAll('.day-tab').forEach(function(tab) {
+      tab.classList.toggle('day-tab--active', parseInt(tab.dataset.day) === dayIndex);
+    });
+    document.querySelectorAll('.day-panel').forEach(function(panel) {
+      panel.classList.toggle('day-panel--active', parseInt(panel.dataset.day) === dayIndex);
+    });
+    applyFilters();
+  }
+
+  function applyFilters() {
+    var hub = document.getElementById('hub-filter').value;
+    var region = document.getElementById('region-filter').value;
+    var bestOnly = document.getElementById('best-bets-toggle').checked;
+    var panel = document.getElementById('day-panel-' + currentDay);
+    if (!panel) return;
+
+    var groups = panel.querySelectorAll('.route-group');
+    var visibleCount = 0;
+
+    groups.forEach(function(group) {
+      var matchHub = hub === 'all' || group.dataset.hub === hub;
+      var matchRegion = region === 'all' || group.dataset.region === region;
+      var matchBest = !bestOnly || parseInt(group.dataset.delta) >= 3;
+      var visible = matchHub && matchRegion && matchBest;
+      group.style.display = visible ? '' : 'none';
+      if (visible) visibleCount++;
+    });
+
+    var emptyState = panel.querySelector('.empty-state--filtered');
+    if (visibleCount === 0 && groups.length > 0) {
+      if (!emptyState) {
+        emptyState = document.createElement('div');
+        emptyState.className = 'empty-state empty-state--filtered';
+        emptyState.innerHTML = '<div class="empty-state__icon">&#128269;</div>'
+          + '<p class="empty-state__title">No matching routes</p>'
+          + '<p class="empty-state__text">Try adjusting your filters.</p>';
+        var list = panel.querySelector('.route-list');
+        if (list) list.after(emptyState);
+      }
+      emptyState.style.display = '';
+    } else if (emptyState) {
+      emptyState.style.display = 'none';
+    }
+  }
+
+  function applySort() {
+    var sortValue = document.getElementById('sort-select').value;
+    var panel = document.getElementById('day-panel-' + currentDay);
+    if (!panel) return;
+
+    var list = panel.querySelector('.route-list');
+    if (!list) return;
+
+    var groups = Array.from(list.querySelectorAll('.route-group'));
+    groups.sort(function(a, b) {
+      switch (sortValue) {
+        case 'delta-desc':
+          return parseInt(b.dataset.delta) - parseInt(a.dataset.delta);
+        case 'route-asc':
+          return a.dataset.route.localeCompare(b.dataset.route);
+        case 'flights-desc':
+          return parseInt(b.dataset.flights) - parseInt(a.dataset.flights);
+        default:
+          return 0;
       }
     });
-  }
-
-  function toggleCol(btn) {
-    btn.classList.toggle('active');
-    const colClass = btn.dataset.col;
-    const visible = btn.classList.contains('active');
-    document.querySelectorAll('.' + colClass).forEach(el => {
-      el.style.display = visible ? '' : 'none';
-    });
-  }
-
-  function sortTable(tableId, col, desc) {
-    const table = document.getElementById(tableId);
-    const tbody = table.querySelector('tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    const dir = desc ? -1 : 1;
-    rows.sort((a, b) => {
-      let va = a.cells[col].textContent.trim();
-      let vb = b.cells[col].textContent.trim();
-      const na = parseFloat(va.replace('+', ''));
-      const nb = parseFloat(vb.replace('+', ''));
-      if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
-      return va.localeCompare(vb) * dir;
-    });
-    rows.forEach(r => tbody.appendChild(r));
+    groups.forEach(function(g) { list.appendChild(g); });
   }
   </script>
 </body>
