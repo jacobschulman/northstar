@@ -7,322 +7,411 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
+
+  <!-- Header -->
+  <header class="site-header">
     <div class="container">
-      <h1>Northstar — United Seat Availability</h1>
-      <div class="subtitle">Last updated: 2026-02-14 11:43 PM ET</div>
+      <h1 class="site-title">Northstar</h1>
+      <p class="site-subtitle">United Polaris Seat Availability</p>
+      <p class="site-timestamp">Last updated: 2026-02-16 12:23 AM ET</p>
     </div>
   </header>
 
-  <div class="container">
-    <div class="stats">
-      <div class="stat-card">
-        <div class="label">Routes</div>
-        <div class="value">2</div>
+  <!-- Summary Strip -->
+  <div class="summary-strip">
+    <div class="container summary-strip__inner">
+      <div class="summary-stat">
+        <span class="summary-stat__value">2</span>
+        <span class="summary-stat__label">Best Bets</span>
       </div>
-      <div class="stat-card">
-        <div class="label">Flights</div>
-        <div class="value">18</div>
+      <div class="summary-divider"></div>
+      
+      <div class="summary-stat">
+        <span class="summary-stat__value">2</span>
+        <span class="summary-stat__label">Today</span>
       </div>
-      <div class="stat-card">
-        <div class="label">Best Bets</div>
-        <div class="value" style="color: var(--green)">16</div>
+      
+      <div class="summary-stat">
+        <span class="summary-stat__value">0</span>
+        <span class="summary-stat__label">Tomorrow</span>
       </div>
-    </div>
-
-    
-    <div class="section">
-      <h2>Best Bets — Polaris Delta &ge; 3</h2>
-
-      <div class="filters">
-        <button class="filter-btn active" onclick="filterHub('all')">All</button>
-        
-        <button class="filter-btn" onclick="filterHub('EWR')">EWR</button>
-        
-        <button class="filter-btn" onclick="filterHub('SFO')">SFO</button>
-        
+      
+      <div class="summary-stat">
+        <span class="summary-stat__value">0</span>
+        <span class="summary-stat__label">Wednesday</span>
       </div>
-
-      <table id="best-bets-table">
-        <thead>
-          <tr>
-            <th onclick="sortTable('best-bets-table', 0)">Route</th>
-            <th onclick="sortTable('best-bets-table', 1)">Flight</th>
-            <th onclick="sortTable('best-bets-table', 2)">Date</th>
-            <th onclick="sortTable('best-bets-table', 3)">Aircraft</th>
-            <th onclick="sortTable('best-bets-table', 4)">J Avail</th>
-            <th onclick="sortTable('best-bets-table', 5)">J SB</th>
-            <th onclick="sortTable('best-bets-table', 6, true)">J Delta</th>
-            <th onclick="sortTable('best-bets-table', 7)">PP Avail</th>
-            <th onclick="sortTable('best-bets-table', 8)">Y Avail</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA146</td>
-            <td>2026-02-15</td>
-            <td>767-300</td>
-            <td>31/45</td>
-            <td>1</td>
-            <td class="delta-positive">+30</td>
-            <td>6/22</td>
-            <td>54/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA122</td>
-            <td>2026-02-15</td>
-            <td>767-300</td>
-            <td>26/45</td>
-            <td>1</td>
-            <td class="delta-positive">+25</td>
-            <td>-1/22</td>
-            <td>31/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA146</td>
-            <td>2026-02-16</td>
-            <td>767-300</td>
-            <td>25/45</td>
-            <td>2</td>
-            <td class="delta-positive">+23</td>
-            <td>14/22</td>
-            <td>72/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA940</td>
-            <td>2026-02-16</td>
-            <td>767-300</td>
-            <td>24/45</td>
-            <td>2</td>
-            <td class="delta-positive">+22</td>
-            <td>13/22</td>
-            <td>66/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA940</td>
-            <td>2026-02-15</td>
-            <td>767-300</td>
-            <td>21/45</td>
-            <td>0</td>
-            <td class="delta-positive">+21</td>
-            <td>12/22</td>
-            <td>37/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA904</td>
-            <td>2026-02-15</td>
-            <td>767-300</td>
-            <td>24/45</td>
-            <td>4</td>
-            <td class="delta-positive">+20</td>
-            <td>12/22</td>
-            <td>53/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA122</td>
-            <td>2026-02-16</td>
-            <td>767-300</td>
-            <td>20/45</td>
-            <td>0</td>
-            <td class="delta-positive">+20</td>
-            <td>6/22</td>
-            <td>57/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA14</td>
-            <td>2026-02-15</td>
-            <td>767-300</td>
-            <td>18/45</td>
-            <td>1</td>
-            <td class="delta-positive">+17</td>
-            <td>9/22</td>
-            <td>38/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA14</td>
-            <td>2026-02-16</td>
-            <td>767-300</td>
-            <td>16/45</td>
-            <td>1</td>
-            <td class="delta-positive">+15</td>
-            <td>8/22</td>
-            <td>61/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA16</td>
-            <td>2026-02-16</td>
-            <td>767-300</td>
-            <td>14/45</td>
-            <td>1</td>
-            <td class="delta-positive">+13</td>
-            <td>11/22</td>
-            <td>48/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA16</td>
-            <td>2026-02-15</td>
-            <td>767-300</td>
-            <td>14/45</td>
-            <td>2</td>
-            <td class="delta-positive">+12</td>
-            <td>6/22</td>
-            <td>26/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA934</td>
-            <td>2026-02-15</td>
-            <td>767-300</td>
-            <td>12/45</td>
-            <td>1</td>
-            <td class="delta-positive">+11</td>
-            <td>-2/22</td>
-            <td>24/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA904</td>
-            <td>2026-02-16</td>
-            <td>767-300</td>
-            <td>11/45</td>
-            <td>0</td>
-            <td class="delta-positive">+11</td>
-            <td>16/22</td>
-            <td>26/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="EWR">
-            <td><a class="route-link" href="routes/EWR-LHR.html">EWR-LHR</a></td>
-            <td>UA934</td>
-            <td>2026-02-16</td>
-            <td>767-300</td>
-            <td>8/45</td>
-            <td>0</td>
-            <td class="delta-positive">+8</td>
-            <td>2/22</td>
-            <td>42/99</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="SFO">
-            <td><a class="route-link" href="routes/SFO-SIN.html">SFO-SIN</a></td>
-            <td>UA1</td>
-            <td>2026-02-16</td>
-            <td>787-9</td>
-            <td>8/48</td>
-            <td>1</td>
-            <td class="delta-positive">+7</td>
-            <td>1/21</td>
-            <td>50/188</td>
-          </tr>
-          
-          <tr class="row-best" data-hub="SFO">
-            <td><a class="route-link" href="routes/SFO-SIN.html">SFO-SIN</a></td>
-            <td>UA29</td>
-            <td>2026-02-16</td>
-            <td>787-9</td>
-            <td>14/48</td>
-            <td>8</td>
-            <td class="delta-positive">+6</td>
-            <td>11/21</td>
-            <td>147/188</td>
-          </tr>
-          
-        </tbody>
-      </table>
-    </div>
-    
-
-    <div class="section">
-      <h2>All Routes</h2>
-      <div class="route-index">
-        
-        
-        <a href="routes/EWR-LHR.html" style="text-decoration: none; color: inherit;">
-          <div class="route-card">
-            <div>
-              <div class="route-name">EWR-LHR</div>
-              <div class="route-stats">14 flights</div>
-            </div>
-            <div>
-              
-              <span class="delta-positive">+30</span>
-              
-            </div>
-          </div>
-        </a>
-        
-        
-        <a href="routes/SFO-SIN.html" style="text-decoration: none; color: inherit;">
-          <div class="route-card">
-            <div>
-              <div class="route-name">SFO-SIN</div>
-              <div class="route-stats">4 flights</div>
-            </div>
-            <div>
-              
-              <span class="delta-positive">+7</span>
-              
-            </div>
-          </div>
-        </a>
-        
+      
+      <div class="summary-divider"></div>
+      <div class="summary-stat">
+        <span class="summary-stat__value">9</span>
+        <span class="summary-stat__label">Flights</span>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-stat__value">2</span>
+        <span class="summary-stat__label">Routes</span>
       </div>
     </div>
   </div>
 
-  <div class="timestamp">Generated by Northstar | 2026-02-14 11:43 PM ET</div>
+  <!-- Day Tabs (sticky) -->
+  <nav class="day-tabs" id="day-tabs">
+    <div class="container day-tabs__inner">
+      
+      <button
+        class="day-tab day-tab--active"
+        data-day="0"
+        onclick="switchDay(0)"
+      >
+        <span class="day-tab__label">Today</span>
+        <span class="day-tab__date">Mon Feb 16</span>
+        <span class="day-tab__badge day-tab__badge--has-bets">
+          2
+        </span>
+      </button>
+      
+      <button
+        class="day-tab "
+        data-day="1"
+        onclick="switchDay(1)"
+      >
+        <span class="day-tab__label">Tomorrow</span>
+        <span class="day-tab__date">Tue Feb 17</span>
+        <span class="day-tab__badge ">
+          0
+        </span>
+      </button>
+      
+      <button
+        class="day-tab "
+        data-day="2"
+        onclick="switchDay(2)"
+      >
+        <span class="day-tab__label">Wednesday</span>
+        <span class="day-tab__date">Wed Feb 18</span>
+        <span class="day-tab__badge ">
+          0
+        </span>
+      </button>
+      
+    </div>
+  </nav>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="container filter-bar__inner">
+      <div class="filter-group">
+        <label class="filter-label" for="hub-filter">Hub</label>
+        <select id="hub-filter" class="filter-select" onchange="applyFilters()">
+          <option value="all">All Hubs</option>
+          
+          <option value="EWR">EWR</option>
+          
+          <option value="SFO">SFO</option>
+          
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label" for="region-filter">Region</label>
+        <select id="region-filter" class="filter-select" onchange="applyFilters()">
+          <option value="all">All Regions</option>
+          
+          <option value="africa">Africa</option>
+          
+          <option value="asia">Asia</option>
+          
+          <option value="europe">Europe</option>
+          
+          <option value="latin_america">Latin America</option>
+          
+          <option value="middle_east">Middle East</option>
+          
+          <option value="oceania">Oceania</option>
+          
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="toggle">
+          <input type="checkbox" id="best-bets-toggle" onchange="applyFilters()">
+          <span class="toggle__slider"></span>
+          <span class="toggle__label">Best bets only</span>
+        </label>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label" for="sort-select">Sort</label>
+        <select id="sort-select" class="filter-select" onchange="applySort()">
+          <option value="delta-desc">Best J Delta</option>
+          <option value="route-asc">Route Name</option>
+          <option value="flights-desc">Flight Count</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Day Panels -->
+  <main class="container main-content">
+    
+    <div
+      class="day-panel day-panel--active"
+      id="day-panel-0"
+      data-day="0"
+    >
+      
+      <div class="route-list" id="route-list-0">
+        
+        <div
+          class="route-group"
+          data-hub="EWR"
+          data-region="europe"
+          data-delta="23"
+          data-route="EWR-LHR"
+          data-flights="7"
+        >
+          <div class="route-group__header">
+            <div class="route-group__left">
+              <a href="routes/EWR-LHR.html" class="route-group__name">EWR &rarr; LHR</a>
+              <span class="route-group__meta">7 flights</span>
+            </div>
+            <div class="route-group__best-delta route-group__best-delta--positive">
+              +23
+            </div>
+          </div>
+          <div class="flight-table">
+            <div class="flight-table__header">
+              <span class="flight-col flight-col--flight">Flight</span>
+              <span class="flight-col flight-col--time">Departs</span>
+              <span class="flight-col flight-col--aircraft">Aircraft</span>
+              <span class="flight-col flight-col--delta">J Delta</span>
+              <span class="flight-col flight-col--avail">J Avail</span>
+              <span class="flight-col flight-col--sb">J SB</span>
+            </div>
+            
+            <div class="flight-row flight-row--positive">
+              <span class="flight-col flight-col--flight">UA146</span>
+              <span class="flight-col flight-col--time">10:40 PM</span>
+              <span class="flight-col flight-col--aircraft">767-300</span>
+              <span class="flight-col flight-col--delta delta-positive">+23</span>
+              <span class="flight-col flight-col--avail">25/45</span>
+              <span class="flight-col flight-col--sb">2</span>
+            </div>
+            
+            <div class="flight-row flight-row--positive">
+              <span class="flight-col flight-col--flight">UA940</span>
+              <span class="flight-col flight-col--time">10:00 PM</span>
+              <span class="flight-col flight-col--aircraft">767-300</span>
+              <span class="flight-col flight-col--delta delta-positive">+22</span>
+              <span class="flight-col flight-col--avail">24/45</span>
+              <span class="flight-col flight-col--sb">2</span>
+            </div>
+            
+            <div class="flight-row flight-row--positive">
+              <span class="flight-col flight-col--flight">UA122</span>
+              <span class="flight-col flight-col--time">09:10 AM</span>
+              <span class="flight-col flight-col--aircraft">767-300</span>
+              <span class="flight-col flight-col--delta delta-positive">+20</span>
+              <span class="flight-col flight-col--avail">20/45</span>
+              <span class="flight-col flight-col--sb">0</span>
+            </div>
+            
+            <div class="flight-row flight-row--positive">
+              <span class="flight-col flight-col--flight">UA14</span>
+              <span class="flight-col flight-col--time">08:00 PM</span>
+              <span class="flight-col flight-col--aircraft">767-300</span>
+              <span class="flight-col flight-col--delta delta-positive">+15</span>
+              <span class="flight-col flight-col--avail">16/45</span>
+              <span class="flight-col flight-col--sb">1</span>
+            </div>
+            
+            <div class="flight-row flight-row--positive">
+              <span class="flight-col flight-col--flight">UA16</span>
+              <span class="flight-col flight-col--time">06:00 PM</span>
+              <span class="flight-col flight-col--aircraft">767-300</span>
+              <span class="flight-col flight-col--delta delta-positive">+13</span>
+              <span class="flight-col flight-col--avail">14/45</span>
+              <span class="flight-col flight-col--sb">1</span>
+            </div>
+            
+            <div class="flight-row flight-row--positive">
+              <span class="flight-col flight-col--flight">UA904</span>
+              <span class="flight-col flight-col--time">08:45 PM</span>
+              <span class="flight-col flight-col--aircraft">767-300</span>
+              <span class="flight-col flight-col--delta delta-positive">+11</span>
+              <span class="flight-col flight-col--avail">11/45</span>
+              <span class="flight-col flight-col--sb">0</span>
+            </div>
+            
+            <div class="flight-row flight-row--positive">
+              <span class="flight-col flight-col--flight">UA934</span>
+              <span class="flight-col flight-col--time">08:25 AM</span>
+              <span class="flight-col flight-col--aircraft">767-300</span>
+              <span class="flight-col flight-col--delta delta-positive">+8</span>
+              <span class="flight-col flight-col--avail">8/45</span>
+              <span class="flight-col flight-col--sb">0</span>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div
+          class="route-group"
+          data-hub="SFO"
+          data-region="asia"
+          data-delta="7"
+          data-route="SFO-SIN"
+          data-flights="2"
+        >
+          <div class="route-group__header">
+            <div class="route-group__left">
+              <a href="routes/SFO-SIN.html" class="route-group__name">SFO &rarr; SIN</a>
+              <span class="route-group__meta">2 flights</span>
+            </div>
+            <div class="route-group__best-delta route-group__best-delta--positive">
+              +7
+            </div>
+          </div>
+          <div class="flight-table">
+            <div class="flight-table__header">
+              <span class="flight-col flight-col--flight">Flight</span>
+              <span class="flight-col flight-col--time">Departs</span>
+              <span class="flight-col flight-col--aircraft">Aircraft</span>
+              <span class="flight-col flight-col--delta">J Delta</span>
+              <span class="flight-col flight-col--avail">J Avail</span>
+              <span class="flight-col flight-col--sb">J SB</span>
+            </div>
+            
+            <div class="flight-row flight-row--positive">
+              <span class="flight-col flight-col--flight">UA1</span>
+              <span class="flight-col flight-col--time">10:35 PM</span>
+              <span class="flight-col flight-col--aircraft">787-9</span>
+              <span class="flight-col flight-col--delta delta-positive">+7</span>
+              <span class="flight-col flight-col--avail">8/48</span>
+              <span class="flight-col flight-col--sb">1</span>
+            </div>
+            
+            <div class="flight-row flight-row--positive">
+              <span class="flight-col flight-col--flight">UA29</span>
+              <span class="flight-col flight-col--time">10:35 AM</span>
+              <span class="flight-col flight-col--aircraft">787-9</span>
+              <span class="flight-col flight-col--delta delta-positive">+6</span>
+              <span class="flight-col flight-col--avail">14/48</span>
+              <span class="flight-col flight-col--sb">8</span>
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+    
+    <div
+      class="day-panel "
+      id="day-panel-1"
+      data-day="1"
+    >
+      
+      <div class="empty-state">
+        <div class="empty-state__icon">&#9992;</div>
+        <p class="empty-state__title">No flights for Tomorrow</p>
+        <p class="empty-state__text">No availability data for Tue Feb 17. Check back after the next scrape.</p>
+      </div>
+      
+    </div>
+    
+    <div
+      class="day-panel "
+      id="day-panel-2"
+      data-day="2"
+    >
+      
+      <div class="empty-state">
+        <div class="empty-state__icon">&#9992;</div>
+        <p class="empty-state__title">No flights for Wednesday</p>
+        <p class="empty-state__text">No availability data for Wed Feb 18. Check back after the next scrape.</p>
+      </div>
+      
+    </div>
+    
+  </main>
+
+  <footer class="site-footer">
+    <p>Generated by Northstar | 2026-02-16 12:23 AM ET</p>
+  </footer>
 
   <script>
-  function filterHub(hub) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-    document.querySelectorAll('#best-bets-table tbody tr').forEach(row => {
-      if (hub === 'all' || row.dataset.hub === hub) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
+  var currentDay = 0;
+
+  function switchDay(dayIndex) {
+    currentDay = dayIndex;
+    document.querySelectorAll('.day-tab').forEach(function(tab) {
+      tab.classList.toggle('day-tab--active', parseInt(tab.dataset.day) === dayIndex);
     });
+    document.querySelectorAll('.day-panel').forEach(function(panel) {
+      panel.classList.toggle('day-panel--active', parseInt(panel.dataset.day) === dayIndex);
+    });
+    applyFilters();
   }
 
-  function sortTable(tableId, col, desc) {
-    const table = document.getElementById(tableId);
-    const tbody = table.querySelector('tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    const dir = desc ? -1 : 1;
-    rows.sort((a, b) => {
-      let va = a.cells[col].textContent.trim();
-      let vb = b.cells[col].textContent.trim();
-      const na = parseFloat(va.replace('+', ''));
-      const nb = parseFloat(vb.replace('+', ''));
-      if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
-      return va.localeCompare(vb) * dir;
+  function applyFilters() {
+    var hub = document.getElementById('hub-filter').value;
+    var region = document.getElementById('region-filter').value;
+    var bestOnly = document.getElementById('best-bets-toggle').checked;
+    var panel = document.getElementById('day-panel-' + currentDay);
+    if (!panel) return;
+
+    var groups = panel.querySelectorAll('.route-group');
+    var visibleCount = 0;
+
+    groups.forEach(function(group) {
+      var matchHub = hub === 'all' || group.dataset.hub === hub;
+      var matchRegion = region === 'all' || group.dataset.region === region;
+      var matchBest = !bestOnly || parseInt(group.dataset.delta) >= 3;
+      var visible = matchHub && matchRegion && matchBest;
+      group.style.display = visible ? '' : 'none';
+      if (visible) visibleCount++;
     });
-    rows.forEach(r => tbody.appendChild(r));
+
+    var emptyState = panel.querySelector('.empty-state--filtered');
+    if (visibleCount === 0 && groups.length > 0) {
+      if (!emptyState) {
+        emptyState = document.createElement('div');
+        emptyState.className = 'empty-state empty-state--filtered';
+        emptyState.innerHTML = '<div class="empty-state__icon">&#128269;</div>'
+          + '<p class="empty-state__title">No matching routes</p>'
+          + '<p class="empty-state__text">Try adjusting your filters.</p>';
+        var list = panel.querySelector('.route-list');
+        if (list) list.after(emptyState);
+      }
+      emptyState.style.display = '';
+    } else if (emptyState) {
+      emptyState.style.display = 'none';
+    }
+  }
+
+  function applySort() {
+    var sortValue = document.getElementById('sort-select').value;
+    var panel = document.getElementById('day-panel-' + currentDay);
+    if (!panel) return;
+
+    var list = panel.querySelector('.route-list');
+    if (!list) return;
+
+    var groups = Array.from(list.querySelectorAll('.route-group'));
+    groups.sort(function(a, b) {
+      switch (sortValue) {
+        case 'delta-desc':
+          return parseInt(b.dataset.delta) - parseInt(a.dataset.delta);
+        case 'route-asc':
+          return a.dataset.route.localeCompare(b.dataset.route);
+        case 'flights-desc':
+          return parseInt(b.dataset.flights) - parseInt(a.dataset.flights);
+        default:
+          return 0;
+      }
+    });
+    groups.forEach(function(g) { list.appendChild(g); });
   }
   </script>
 </body>
