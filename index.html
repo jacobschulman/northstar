@@ -13,7 +13,7 @@
     <div class="container">
       <h1 class="site-title">Northstar</h1>
       <p class="site-subtitle">United Polaris Seat Availability</p>
-      <p class="site-timestamp">Last updated: 2026-02-16 04:34 PM ET</p>
+      <p class="site-timestamp">Last updated: 2026-02-17 12:27 AM ET</p>
     </div>
   </header>
 
@@ -21,13 +21,13 @@
   <div class="summary-strip">
     <div class="container summary-strip__inner">
       <div class="summary-stat">
-        <span class="summary-stat__value">2</span>
+        <span class="summary-stat__value">0</span>
         <span class="summary-stat__label">Best Bets</span>
       </div>
       <div class="summary-divider"></div>
       
       <div class="summary-stat">
-        <span class="summary-stat__value">2</span>
+        <span class="summary-stat__value">0</span>
         <span class="summary-stat__label">Today</span>
       </div>
       
@@ -38,16 +38,16 @@
       
       <div class="summary-stat">
         <span class="summary-stat__value">0</span>
-        <span class="summary-stat__label">Wednesday</span>
+        <span class="summary-stat__label">Thursday</span>
       </div>
       
       <div class="summary-divider"></div>
       <div class="summary-stat">
-        <span class="summary-stat__value">9</span>
+        <span class="summary-stat__value">0</span>
         <span class="summary-stat__label">Flights</span>
       </div>
       <div class="summary-stat">
-        <span class="summary-stat__value">2</span>
+        <span class="summary-stat__value">0</span>
         <span class="summary-stat__label">Routes</span>
       </div>
     </div>
@@ -63,9 +63,9 @@
         onclick="switchDay(0)"
       >
         <span class="day-tab__label">Today</span>
-        <span class="day-tab__date">Mon Feb 16</span>
-        <span class="day-tab__badge day-tab__badge--has-bets">
-          2
+        <span class="day-tab__date">Tue Feb 17</span>
+        <span class="day-tab__badge ">
+          0
         </span>
       </button>
       
@@ -75,7 +75,7 @@
         onclick="switchDay(1)"
       >
         <span class="day-tab__label">Tomorrow</span>
-        <span class="day-tab__date">Tue Feb 17</span>
+        <span class="day-tab__date">Wed Feb 18</span>
         <span class="day-tab__badge ">
           0
         </span>
@@ -86,8 +86,8 @@
         data-day="2"
         onclick="switchDay(2)"
       >
-        <span class="day-tab__label">Wednesday</span>
-        <span class="day-tab__date">Wed Feb 18</span>
+        <span class="day-tab__label">Thursday</span>
+        <span class="day-tab__date">Thu Feb 19</span>
         <span class="day-tab__badge ">
           0
         </span>
@@ -103,10 +103,6 @@
         <label class="filter-label" for="hub-filter">Hub</label>
         <select id="hub-filter" class="filter-select" onchange="applyFilters()">
           <option value="all">All Hubs</option>
-          
-          <option value="EWR">EWR</option>
-          
-          <option value="SFO">SFO</option>
           
         </select>
       </div>
@@ -159,149 +155,10 @@
       data-day="0"
     >
       
-      <div class="route-list" id="route-list-0">
-        
-        <div
-          class="route-group"
-          data-hub="EWR"
-          data-region="europe"
-          data-delta="23"
-          data-route="EWR-LHR"
-          data-flights="7"
-        >
-          <div class="route-group__header">
-            <div class="route-group__left">
-              <a href="routes/EWR-LHR.html" class="route-group__name">EWR &rarr; LHR</a>
-              <span class="route-group__meta">7 flights</span>
-            </div>
-            <div class="route-group__best-delta route-group__best-delta--positive">
-              +23
-            </div>
-          </div>
-          <div class="flight-table">
-            <div class="flight-table__header">
-              <span class="flight-col flight-col--flight">Flight</span>
-              <span class="flight-col flight-col--time">Departs</span>
-              <span class="flight-col flight-col--aircraft">Aircraft</span>
-              <span class="flight-col flight-col--delta">J Delta</span>
-              <span class="flight-col flight-col--avail">J Avail</span>
-              <span class="flight-col flight-col--sb">J SB</span>
-            </div>
-            
-            <div class="flight-row flight-row--positive">
-              <span class="flight-col flight-col--flight">UA146</span>
-              <span class="flight-col flight-col--time">10:40 PM</span>
-              <span class="flight-col flight-col--aircraft">767-300</span>
-              <span class="flight-col flight-col--delta delta-positive">+23</span>
-              <span class="flight-col flight-col--avail">25/45</span>
-              <span class="flight-col flight-col--sb">2</span>
-            </div>
-            
-            <div class="flight-row flight-row--positive">
-              <span class="flight-col flight-col--flight">UA940</span>
-              <span class="flight-col flight-col--time">10:00 PM</span>
-              <span class="flight-col flight-col--aircraft">767-300</span>
-              <span class="flight-col flight-col--delta delta-positive">+22</span>
-              <span class="flight-col flight-col--avail">24/45</span>
-              <span class="flight-col flight-col--sb">2</span>
-            </div>
-            
-            <div class="flight-row flight-row--positive">
-              <span class="flight-col flight-col--flight">UA122</span>
-              <span class="flight-col flight-col--time">09:10 AM</span>
-              <span class="flight-col flight-col--aircraft">767-300</span>
-              <span class="flight-col flight-col--delta delta-positive">+20</span>
-              <span class="flight-col flight-col--avail">20/45</span>
-              <span class="flight-col flight-col--sb">0</span>
-            </div>
-            
-            <div class="flight-row flight-row--positive">
-              <span class="flight-col flight-col--flight">UA14</span>
-              <span class="flight-col flight-col--time">08:00 PM</span>
-              <span class="flight-col flight-col--aircraft">767-300</span>
-              <span class="flight-col flight-col--delta delta-positive">+15</span>
-              <span class="flight-col flight-col--avail">16/45</span>
-              <span class="flight-col flight-col--sb">1</span>
-            </div>
-            
-            <div class="flight-row flight-row--positive">
-              <span class="flight-col flight-col--flight">UA16</span>
-              <span class="flight-col flight-col--time">06:00 PM</span>
-              <span class="flight-col flight-col--aircraft">767-300</span>
-              <span class="flight-col flight-col--delta delta-positive">+13</span>
-              <span class="flight-col flight-col--avail">14/45</span>
-              <span class="flight-col flight-col--sb">1</span>
-            </div>
-            
-            <div class="flight-row flight-row--positive">
-              <span class="flight-col flight-col--flight">UA904</span>
-              <span class="flight-col flight-col--time">08:45 PM</span>
-              <span class="flight-col flight-col--aircraft">767-300</span>
-              <span class="flight-col flight-col--delta delta-positive">+11</span>
-              <span class="flight-col flight-col--avail">11/45</span>
-              <span class="flight-col flight-col--sb">0</span>
-            </div>
-            
-            <div class="flight-row flight-row--positive">
-              <span class="flight-col flight-col--flight">UA934</span>
-              <span class="flight-col flight-col--time">08:25 AM</span>
-              <span class="flight-col flight-col--aircraft">767-300</span>
-              <span class="flight-col flight-col--delta delta-positive">+8</span>
-              <span class="flight-col flight-col--avail">8/45</span>
-              <span class="flight-col flight-col--sb">0</span>
-            </div>
-            
-          </div>
-        </div>
-        
-        <div
-          class="route-group"
-          data-hub="SFO"
-          data-region="asia"
-          data-delta="7"
-          data-route="SFO-SIN"
-          data-flights="2"
-        >
-          <div class="route-group__header">
-            <div class="route-group__left">
-              <a href="routes/SFO-SIN.html" class="route-group__name">SFO &rarr; SIN</a>
-              <span class="route-group__meta">2 flights</span>
-            </div>
-            <div class="route-group__best-delta route-group__best-delta--positive">
-              +7
-            </div>
-          </div>
-          <div class="flight-table">
-            <div class="flight-table__header">
-              <span class="flight-col flight-col--flight">Flight</span>
-              <span class="flight-col flight-col--time">Departs</span>
-              <span class="flight-col flight-col--aircraft">Aircraft</span>
-              <span class="flight-col flight-col--delta">J Delta</span>
-              <span class="flight-col flight-col--avail">J Avail</span>
-              <span class="flight-col flight-col--sb">J SB</span>
-            </div>
-            
-            <div class="flight-row flight-row--positive">
-              <span class="flight-col flight-col--flight">UA1</span>
-              <span class="flight-col flight-col--time">10:35 PM</span>
-              <span class="flight-col flight-col--aircraft">787-9</span>
-              <span class="flight-col flight-col--delta delta-positive">+7</span>
-              <span class="flight-col flight-col--avail">8/48</span>
-              <span class="flight-col flight-col--sb">1</span>
-            </div>
-            
-            <div class="flight-row flight-row--positive">
-              <span class="flight-col flight-col--flight">UA29</span>
-              <span class="flight-col flight-col--time">10:35 AM</span>
-              <span class="flight-col flight-col--aircraft">787-9</span>
-              <span class="flight-col flight-col--delta delta-positive">+6</span>
-              <span class="flight-col flight-col--avail">14/48</span>
-              <span class="flight-col flight-col--sb">8</span>
-            </div>
-            
-          </div>
-        </div>
-        
+      <div class="empty-state">
+        <div class="empty-state__icon">&#9992;</div>
+        <p class="empty-state__title">No flights for Today</p>
+        <p class="empty-state__text">No availability data for Tue Feb 17. Check back after the next scrape.</p>
       </div>
       
     </div>
@@ -315,7 +172,7 @@
       <div class="empty-state">
         <div class="empty-state__icon">&#9992;</div>
         <p class="empty-state__title">No flights for Tomorrow</p>
-        <p class="empty-state__text">No availability data for Tue Feb 17. Check back after the next scrape.</p>
+        <p class="empty-state__text">No availability data for Wed Feb 18. Check back after the next scrape.</p>
       </div>
       
     </div>
@@ -328,8 +185,8 @@
       
       <div class="empty-state">
         <div class="empty-state__icon">&#9992;</div>
-        <p class="empty-state__title">No flights for Wednesday</p>
-        <p class="empty-state__text">No availability data for Wed Feb 18. Check back after the next scrape.</p>
+        <p class="empty-state__title">No flights for Thursday</p>
+        <p class="empty-state__text">No availability data for Thu Feb 19. Check back after the next scrape.</p>
       </div>
       
     </div>
@@ -337,7 +194,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>Generated by Northstar | 2026-02-16 04:34 PM ET</p>
+    <p>Generated by Northstar | 2026-02-17 12:27 AM ET</p>
   </footer>
 
   <script>

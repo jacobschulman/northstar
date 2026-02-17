@@ -7,71 +7,106 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-
-  <header class="site-header">
+  <header>
     <div class="container">
-      <a href="../index.html" class="back-link">&larr; Back to Dashboard</a>
-      <div class="route-header">
-        <h1 class="route-header__title">SFO &rarr; SIN</h1>
-        <span class="route-header__region">Asia</span>
-      </div>
-      <p class="site-timestamp">Last updated: 2026-02-16 04:34 PM ET</p>
+      <h1><a href="../index.html" style="color: white; text-decoration: none;">&larr; Northstar</a> — SFO-SIN</h1>
+      <div class="subtitle">Last updated: 2026-02-14 11:43 PM ET</div>
     </div>
   </header>
 
-  <div class="container" style="padding-top: var(--space-lg); padding-bottom: var(--space-2xl);">
-
-    <div class="stats-row">
+  <div class="container">
+    <div class="stats">
       <div class="stat-card">
-        <div class="stat-card__label">Flights</div>
-        <div class="stat-card__value">2</div>
+        <div class="label">Flights</div>
+        <div class="value">4</div>
       </div>
       <div class="stat-card">
-        <div class="stat-card__label">Best J Delta</div>
-        <div class="stat-card__value" style="color: var(--green)">
+        <div class="label">Best J Delta</div>
+        <div class="value" style="color: var(--green)">
           
           +7
         </div>
       </div>
       <div class="stat-card">
-        <div class="stat-card__label">Avg J Available</div>
-        <div class="stat-card__value">
-          11.0
+        <div class="label">Avg J Available</div>
+        <div class="value">
+          7.0
         </div>
       </div>
     </div>
 
-    
-    <div class="day-group">
-      <h2 class="day-group__heading">Today &mdash; Mon Feb 16</h2>
-      <table class="data-table" id="table-1">
+    <div class="section">
+      <h2>All Flights</h2>
+      <table id="route-table">
         <thead>
           <tr>
-            <th>Flight</th>
-            <th>Depart</th>
-            <th>Arrive</th>
-            <th>Aircraft</th>
-            <th>J Avail</th>
-            <th>J Cap</th>
-            <th>J SB</th>
-            <th>J Delta</th>
-            <th>PP Avail</th>
-            <th>PP SB</th>
-            <th>Y Avail</th>
-            <th>Y SB</th>
+            <th onclick="sortTable('route-table', 0)">Flight</th>
+            <th onclick="sortTable('route-table', 1)">Date</th>
+            <th onclick="sortTable('route-table', 2)">Day</th>
+            <th onclick="sortTable('route-table', 3)">Depart</th>
+            <th onclick="sortTable('route-table', 4)">Arrive</th>
+            <th onclick="sortTable('route-table', 5)">Aircraft</th>
+            <th onclick="sortTable('route-table', 6)">J Avail</th>
+            <th onclick="sortTable('route-table', 7)">J Cap</th>
+            <th onclick="sortTable('route-table', 8)">J SB</th>
+            <th onclick="sortTable('route-table', 9, true)">J Delta</th>
+            <th onclick="sortTable('route-table', 10)">PP Avail</th>
+            <th onclick="sortTable('route-table', 11)">PP SB</th>
+            <th onclick="sortTable('route-table', 12)">Y Avail</th>
+            <th onclick="sortTable('route-table', 13)">Y SB</th>
           </tr>
         </thead>
         <tbody>
           
+          <tr class="row-ok">
+            <td>UA29</td>
+            <td>2026-02-15</td>
+            <td>Sun</td>
+            <td>20260215 10:35 AM</td>
+            <td>20260216 08:15 PM</td>
+            <td>787-9</td>
+            <td>5</td>
+            <td>48</td>
+            <td>3</td>
+            <td class="delta-neutral">
+              +2
+            </td>
+            <td>1/21</td>
+            <td>3</td>
+            <td>65/188</td>
+            <td>2</td>
+          </tr>
+          
+          <tr class="row-trouble">
+            <td>UA1</td>
+            <td>2026-02-15</td>
+            <td>Sun</td>
+            <td>20260215 10:35 PM</td>
+            <td>20260217 08:00 AM</td>
+            <td>787-9</td>
+            <td>1</td>
+            <td>48</td>
+            <td>5</td>
+            <td class="delta-negative">
+              -4
+            </td>
+            <td>8/21</td>
+            <td>2</td>
+            <td>40/188</td>
+            <td>0</td>
+          </tr>
+          
           <tr class="row-best">
             <td>UA29</td>
+            <td>2026-02-16</td>
+            <td>Mon</td>
             <td>20260216 10:35 AM</td>
             <td>20260217 08:15 PM</td>
             <td>787-9</td>
             <td>14</td>
             <td>48</td>
             <td>8</td>
-            <td class="delta-positive" style="font-weight:800">
+            <td class="delta-positive">
               +6
             </td>
             <td>11/21</td>
@@ -82,13 +117,15 @@
           
           <tr class="row-best">
             <td>UA1</td>
+            <td>2026-02-16</td>
+            <td>Mon</td>
             <td>20260216 10:35 PM</td>
             <td>20260218 08:00 AM</td>
             <td>787-9</td>
             <td>8</td>
             <td>48</td>
             <td>1</td>
-            <td class="delta-positive" style="font-weight:800">
+            <td class="delta-positive">
               +7
             </td>
             <td>1/21</td>
@@ -100,40 +137,26 @@
         </tbody>
       </table>
     </div>
-    
-
-    
   </div>
 
-  <footer class="site-footer">
-    <p>Generated by Northstar | 2026-02-16 04:34 PM ET</p>
-  </footer>
+  <div class="timestamp">Generated by Northstar | 2026-02-14 11:43 PM ET</div>
 
   <script>
-  document.querySelectorAll('.data-table thead th').forEach(function(th, colIdx) {
-    th.addEventListener('click', function() {
-      var table = th.closest('table');
-      var tbody = table.querySelector('tbody');
-      var rows = Array.from(tbody.querySelectorAll('tr'));
-      var isAsc = th.classList.contains('sort-asc');
-
-      table.querySelectorAll('th').forEach(function(h) {
-        h.classList.remove('sort-asc', 'sort-desc');
-      });
-      th.classList.add(isAsc ? 'sort-desc' : 'sort-asc');
-
-      var dir = isAsc ? -1 : 1;
-      rows.sort(function(a, b) {
-        var va = a.cells[colIdx].textContent.trim();
-        var vb = b.cells[colIdx].textContent.trim();
-        var na = parseFloat(va.replace('+', '').replace('/', ''));
-        var nb = parseFloat(vb.replace('+', '').replace('/', ''));
-        if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
-        return va.localeCompare(vb) * dir;
-      });
-      rows.forEach(function(r) { tbody.appendChild(r); });
+  function sortTable(tableId, col, desc) {
+    const table = document.getElementById(tableId);
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const dir = desc ? -1 : 1;
+    rows.sort((a, b) => {
+      let va = a.cells[col].textContent.trim();
+      let vb = b.cells[col].textContent.trim();
+      const na = parseFloat(va.replace('+', ''));
+      const nb = parseFloat(vb.replace('+', ''));
+      if (!isNaN(na) && !isNaN(nb)) return (na - nb) * dir;
+      return va.localeCompare(vb) * dir;
     });
-  });
+    rows.forEach(r => tbody.appendChild(r));
+  }
   </script>
 </body>
 </html>
