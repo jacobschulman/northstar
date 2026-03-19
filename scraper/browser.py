@@ -36,18 +36,29 @@ class BrowserManager:
         self._nav_count = 0
 
     async def start(self):
-        """Launch browser."""
+        """Launch browser.
+
+        Uses Chrome's "new headless" mode which is much harder for sites to
+        detect as automated (passes most bot-detection checks that old headless fails).
+        """
         self._playwright = await async_playwright().start()
+
+        launch_args = [
+            '--disable-blink-features=AutomationControlled',
+            '--disable-dev-shm-usage',
+            '--no-sandbox',
+            '--disable-http2',
+        ]
+        # New headless mode: behaves like a real headed browser but without a window.
+        # Much harder for United to fingerprint vs old headless.
+        if self.headless:
+            launch_args.append('--headless=new')
+
         self._browser = await self._playwright.chromium.launch(
             headless=self.headless,
-            args=[
-                '--disable-blink-features=AutomationControlled',
-                '--disable-dev-shm-usage',
-                '--no-sandbox',
-                '--disable-http2',
-            ]
+            args=launch_args,
         )
-        logger.info(f"Browser launched (headless={self.headless})")
+        logger.info(f"Browser launched (headless={self.headless}, new-headless={'yes' if self.headless else 'n/a'})")
 
     async def get_page(self) -> Page:
         """Get a working page, rotating context if needed."""
@@ -68,22 +79,27 @@ class BrowserManager:
             viewport={'width': 1920, 'height': 1080},
             user_agent=random.choice(USER_AGENTS),
             locale='en-US',
-            timezone_id='America/New_York'
+            timezone_id='America/New_York',
         )
         self._page = await self._context.new_page()
         self._nav_count = 0
 
-        # Warm up: visit homepage to establish cookies
+        # Hide webdriver flag that bot detectors check
+        await self._page.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+        """)
+
+        # Warm up: quick visit to establish cookies (short timeout — not critical)
         try:
             await self._page.goto(
-                "https://www.united.com",
-                timeout=90000,
+                "https://www.united.com/en/us/flightstatus",
+                timeout=20000,
                 wait_until="domcontentloaded",
             )
-            await asyncio.sleep(random.uniform(2, 5))
+            await asyncio.sleep(random.uniform(1, 3))
             logger.info("New browser context initialized")
         except Exception as e:
-            logger.warning(f"Homepage warmup failed (non-fatal): {e}")
+            logger.info(f"Warmup skipped (non-fatal): {type(e).__name__}")
 
     async def navigate(self, url: str, timeout: int = 90000) -> Page:
         """Navigate to URL with automatic crash recovery.

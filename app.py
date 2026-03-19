@@ -1,72 +1,66 @@
 import streamlit as st
 import asyncio
-import sys
-from pathlib import Path
 import json
+import logging
+import sys
+from datetime import datetime, timedelta
+from pathlib import Path
+from collections import deque
 
-# Add scraper directory to path
-sys.path.append(str(Path(__file__).parent / "scraper"))
+# ─── Custom log handler that captures messages for the UI ───
+class StreamlitLogHandler(logging.Handler):
+    def __init__(self, maxlen=300):
+        super().__init__()
+        self.records = deque(maxlen=maxlen)
 
-from main import UnitedScraper
+    def emit(self, record):
+        self.records.append(self.format(record))
+
+    def get_logs(self) -> str:
+        return "\n".join(self.records)
+
+    def clear(self):
+        self.records.clear()
+
+
+log_handler = StreamlitLogHandler()
+log_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('scraper.log'),
+        logging.StreamHandler(sys.stderr),
+        log_handler,
+    ]
+)
+logger = logging.getLogger(__name__)
+
+from scraper.browser import BrowserManager
+from scraper.hub_discovery import KNOWN_UA_ROUTES
+from scraper.route_discovery import auto_discover_flights
+from scraper.flight_scraper import scrape_flight
+from scraper.rate_limiter import AdaptiveRateLimiter
+from scraper.models import FlightData
+from scraper.main import load_latest_data, save_latest_data
 
 st.set_page_config(
-    page_title="United Cabin Crawler",
+    page_title="Northstar — United Availability",
     page_icon="✈️",
-    layout="centered"
+    layout="wide"
 )
 
-# Custom CSS for United Airlines styling + sticky header
 st.markdown("""
 <style>
-    /* United blue color scheme */
     :root {
         --united-blue: #0E3B7C;
-        --united-light-blue: #1E5BA8;
+        --united-light: #1E5BA8;
         --united-dark: #001E4E;
     }
-    
-    /* Sticky header */
-    .main > div:first-child {
-        position: sticky;
-        top: 0;
-        background: white;
-        z-index: 999;
-        padding-top: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 3px solid var(--united-blue);
-        margin-bottom: 1rem;
-    }
-    
-    /* Title styling */
-    h1 {
-        color: var(--united-blue) !important;
-        font-weight: 700 !important;
-        margin-bottom: 0.25rem !important;
-    }
-    
-    
-    /* Subtitle */
-    .subtitle {
-        color: #666;
-        font-size: 0.95rem;
-        margin-bottom: 1rem;
-    }
-
-    
-    /* Form styling */
-    .stForm {
-        background: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
-    }
-
-    /* Help text visibility */
-    .stTextInput label small, .stNumberInput label small, .stCheckbox label small {
-        color: #ccc;
-    }
-    
-    /* Button styling - United blue */
+    h1 { color: var(--united-blue) !important; font-weight: 700 !important; }
+    h2, h3 { color: var(--united-dark) !important; font-weight: 600 !important; }
+    .subtitle { color: #666; font-size: 0.95rem; margin-bottom: 1rem; }
     .stButton>button {
         background-color: var(--united-blue) !important;
         color: white !important;
@@ -74,313 +68,350 @@ st.markdown("""
         border: none !important;
         padding: 0.75rem 2rem !important;
         border-radius: 4px !important;
-        transition: background-color 0.2s !important;
     }
-    
-    .stButton>button:hover {
-        background-color: var(--united-light-blue) !important;
-    }
-    
-    /* Radio buttons - United style */
-    .stRadio > label {
-        font-weight: 600;
-        color: var(--united-dark);
-    }
-
-    
-    /* Subheaders */
-    h3 {
-        color: var(--united-dark) !important;
-        font-weight: 600 !important;
-        margin-top: 1rem !important;
-    }
-    
-    /* Dataframe full width */
-    .stDataFrame {
-        width: 100% !important;
-    }
-    
-    /* Info boxes */
-    .stAlert {
-        border-radius: 4px;
-    }
+    .stButton>button:hover { background-color: var(--united-light) !important; }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("✈️ United Cabin Crawler 💺")
-st.markdown('<p class="subtitle">Monitor seat availability, upgrade lists, and standby counts for non-rev travel</p>', unsafe_allow_html=True)
+st.title("✈️ Northstar")
+st.markdown('<p class="subtitle">United Airlines seat availability — Polaris business class monitor</p>', unsafe_allow_html=True)
 
-# Input form
-with st.form("scraper_form"):
-    st.subheader("Flight Configuration")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        origin = st.text_input(
-            "Origin Airport", 
-            value="EWR",
-            max_chars=3,
-            help="3-letter airport code (e.g., EWR, SFO)"
-        ).upper()
-    
-    with col2:
-        destination = st.text_input(
-            "Destination Airport",
-            value="LHR", 
-            max_chars=3,
-            help="3-letter airport code (e.g., LHR, NRT)"
-        ).upper()
-    
-    flight_numbers = st.text_input(
-        "Flight Numbers (optional)",
-        value="",
-        placeholder="Leave blank to auto-discover",
-        help="Enter comma-separated flight numbers (e.g., 14, 16, 110). Do not include 'UA' prefix."
+
+# ─── Sidebar ───
+with st.sidebar:
+    st.markdown("### Settings")
+    show_browser = st.checkbox(
+        "Show browser window",
+        value=False,
+        help="Open visible browser for debugging"
     )
-    
-    st.markdown("**Days to Check**")
-    col_day1, col_day2, col_day3 = st.columns(3)
-    
-    with col_day1:
-        check_today = st.checkbox("Today", value=True)
-    with col_day2:
-        check_tomorrow = st.checkbox("Tomorrow", value=False)
-    with col_day3:
-        check_plus2 = st.checkbox("+2 Days", value=False)
-    
-    col_filter1, col_filter2 = st.columns(2)
-    
-    with col_filter1:
-        direct_only = st.checkbox(
-            "Direct Flights Only",
-            value=True,
-            help="When auto-discovering, only include non-stop flights"
-        )
-    
-    with col_filter2:
-        # Only show max flights control if connections are enabled
-        if not direct_only:
-            max_flights = st.number_input(
-                "Max Flights to Scrape",
-                min_value=1,
-                max_value=50,
-                value=10,
-                help="Limit total flights scraped (connections count as multiple segments)"
-            )
-        else:
-            max_flights = 999  # No limit for direct flights
-    
-    submitted = st.form_submit_button("🚀 Search Flights", use_container_width=True)
+    headless = not show_browser
 
-if submitted:
-    if not origin or not destination:
-        st.error("Please enter both origin and destination airports")
-    elif not (check_today or check_tomorrow or check_plus2):
-        st.error("Please select at least one day to check")
-    else:
-        # Calculate days_ahead based on checkboxes
-        days_to_check = []
-        if check_today:
-            days_to_check.append(0)
-        if check_tomorrow:
-            days_to_check.append(1)
-        if check_plus2:
-            days_to_check.append(2)
-        
-        days_ahead = max(days_to_check) + 1  # For the config
-        
-        # Parse flight numbers
-        flight_nums = []
-        if flight_numbers.strip():
-            try:
-                flight_nums = [int(x.strip()) for x in flight_numbers.split(",")]
-                st.info(f"🎯 Using specified flights: {flight_nums}")
-            except ValueError:
-                st.error("Invalid flight numbers. Please enter comma-separated numbers.")
-                st.stop()
-        else:
-            st.info("🔍 Auto-discovering flights...")
-        
-        # Create config
-        config = {
-            "routes": [
-                {
-                    "origin": origin,
-                    "destination": destination,
-                    "flight_numbers": flight_nums
-                }
-            ],
-            "days_ahead": int(days_ahead),
-            "delay_min": 2,
-            "delay_max": 5,
-            "include_connections": not direct_only,
-            "max_flights": int(max_flights)
-        }
-        
-        # Save config
-        config_dir = Path("config")
-        config_dir.mkdir(exist_ok=True)
-        with open(config_dir / "routes.json", "w") as f:
-            json.dump(config, f, indent=2)
-        
-        # Run scraper
-        st.info("✈️ Starting search... This will take 1-2 minutes.")
-        progress_bar = st.progress(0)
-        status_text = st.empty()
-        
-        try:
-            # Run the scraper
-            scraper = UnitedScraper()
-            
-            # Create a wrapper to show progress
-            async def run_with_progress():
-                status_text.text("Initializing browser...")
-                progress_bar.progress(0.1)
-                
-                await scraper.run()
-                
-                progress_bar.progress(1.0)
-                status_text.text("Complete!")
-            
-            # Run async function
-            asyncio.run(run_with_progress())
-            
-            st.success("✅ Scraping complete!")
-            
-            # Find the latest data directory
-            data_dir = Path("data")
-            if data_dir.exists():
-                latest_run = sorted(data_dir.iterdir(), key=lambda x: x.stat().st_mtime, reverse=True)[0]
-                
-                # Load summary
-                summary_file = latest_run / "summary.json"
-                if summary_file.exists():
-                    with open(summary_file) as f:
-                        summary = json.load(f)
-                    
-                    st.subheader("Results")
-                    st.write(f"**Total flights found:** {summary['total_flights']}")
-                    
-                    st.markdown("**Legend:** 🔴 More standbys than seats | 🟡 Close | 🟢 Good availability")
-                    
-                    # Show route details
-                    for route_key, route_data in summary['routes'].items():
-                        st.markdown(f"### {route_key}")
-                        flights = route_data['flights']
-                        
-                        if not flights:
-                            st.warning("No flights found")
-                            continue
-                        
-                        # Sort flights by date and departure time
-                        flights_sorted = sorted(flights, key=lambda f: (f['flight_date'], f['departure_time']))
-                        
-                        # Create table data
-                        table_data = []
-                        current_date = None
-                        
-                        for flight in flights_sorted:
-                            # Determine status indicator
-                            if flight['polaris_delta'] < 0:
-                                status = "🔴"
-                            elif flight['polaris_available'] <= 2:
-                                status = "🟡"
-                            else:
-                                status = "🟢"
-                            
-                            # Format date nicely (only show if different from previous)
-                            flight_date = flight['flight_date']  # "2025-10-14"
-                            date_obj = __import__('datetime').datetime.strptime(flight_date, "%Y-%m-%d")
-                            date_display = date_obj.strftime("%a %m/%d")  # "Mon 10/14"
-                            
-                            if flight_date != current_date:
-                                date_str = date_display
-                                current_date = flight_date
-                            else:
-                                date_str = ""  # Don't repeat the date
-                            
-                            # Check if connection
-                            is_connection = flight.get('is_connection', False)
-                            flight_num_display = flight['flight_number'].replace('UA', '') if not is_connection else flight['flight_number']
-                            
-                            # Format Polaris column with comma
-                            polaris_sb = flight.get('polaris_standby', flight.get('upgrade_list_waiting', 0))
-                            polaris_str = f"{flight['polaris_available']} / {flight['polaris_capacity']}, {polaris_sb} waiting"
-                            
-                            # J Delta (Polaris business class delta)
-                            j_delta = f"{status} J{flight['polaris_delta']:+d}"
-                            
-                            # Format Premium Plus
-                            premium_str = f"{flight['premium_plus_available']} / {flight['premium_plus_capacity']}"
-                            
-                            # Format Economy with standby count
-                            if flight['economy_available'] > 0:
-                                econ_str = f"{flight['economy_available']} / {flight['economy_capacity']}, {flight['economy_standby']} standby"
-                            else:
-                                econ_str = f"Full, {flight['economy_standby']} standby"
-                            
-                            # Format times (remove seconds if present)
-                            dept_time = flight['departure_time'][:5] if len(flight['departure_time']) > 5 else flight['departure_time']
-                            arr_time = flight['arrival_time'][:5] if len(flight['arrival_time']) > 5 else flight['arrival_time']
-                            
-                            # Check if arrival is next day
-                            arr_display = arr_time
-                            if '+1' in flight.get('arrival_time', '') or date_obj.strftime("%d") != arr_time:
-                                arr_display = f"{arr_time}+1"
-                            
-                            # Aircraft - show connection route if applicable
-                            aircraft_display = flight.get('connection_route', flight['aircraft_type'].replace('Boeing ', '').replace('Airbus ', 'A'))
-                            
-                            table_data.append({
-                                "Date": date_str,
-                                "Flight": flight_num_display,
-                                "Depart": dept_time,
-                                "Arrive": arr_display,
-                                "Polaris": polaris_str,
-                                "Δ": j_delta,
-                                "Premium": premium_str,
-                                "Econ": econ_str,
-                                "Aircraft": aircraft_display
-                            })
-                        
-                        # Display as dataframe
-                        import pandas as pd
-                        df = pd.DataFrame(table_data)
-                        
-                        st.dataframe(
-                            df,
-                            use_container_width=True,
-                            hide_index=True,
-                            height=min(len(flights) * 70 + 38, 600)
-                        )
-                    
-                    st.info(f"📁 Full data saved to: `{latest_run}`")
-        
-        except Exception as e:
-            st.error(f"Error: {str(e)}")
-            st.exception(e)
-
-# Instructions
-with st.expander("ℹ️ How to Use"):
+    st.markdown("---")
+    st.markdown("### How it works")
     st.markdown("""
-    ### Quick Start
-    1. Enter your origin and destination airports
-    2. **Leave flight numbers blank** to auto-discover all flights, or enter specific flight numbers
-    3. Check "Direct Flights Only" to exclude connections (recommended)
-    4. Choose how many days ahead to check
-    5. Click "Search Flights"
-    
-    **Note:** The scraper will open a browser window in the background. The process takes 1-2 minutes depending on how many flights you're checking.
-    
-    ### Auto-Discovery
-    When you leave flight numbers blank, the scraper will:
-    - Automatically find all United flights for your route
-    - Filter to non-stop flights (if "Direct Flights Only" is checked)
-    - Update daily as flight schedules change
-    
-    ### Understanding the Results
-    - 🟢 Green: Seats available, positive delta
-    - 🟡 Yellow: Flight full but manageable standby list
-    - 🔴 Red: Negative delta (more standbys than available seats)
+    1. Pick a hub or enter a city pair
+    2. Select destinations + days to check
+    3. Northstar discovers flight numbers
+       via United's flight status page
+    4. Then scrapes each flight for Polaris
+       seat availability + standby counts
+
+    **J Delta** = available seats − standbys
+    - 🟢 **+3 or more** — good
+    - 🟡 **0 to +2** — tight
+    - 🔴 **negative** — oversold
     """)
+
+    st.markdown("---")
+    latest = load_latest_data()
+    total_flights = len(latest.get("flights", {}))
+    last_updated = latest.get("last_updated", "Never")
+    st.markdown(f"**Cached flights:** {total_flights}")
+    st.markdown(f"**Last updated:** {last_updated}")
+
+
+# ─── Helpers ───
+def get_day_label(offset: int) -> str:
+    """Human-readable label for a day offset."""
+    d = datetime.now().date() + timedelta(days=offset)
+    if offset == 0:
+        return f"Today ({d.strftime('%a %m/%d')})"
+    elif offset == 1:
+        return f"Tomorrow ({d.strftime('%a %m/%d')})"
+    else:
+        return d.strftime('%a %m/%d')
+
+
+def format_delta(delta: int) -> str:
+    if delta >= 3:
+        return f"🟢 J{delta:+d}"
+    elif delta >= 0:
+        return f"🟡 J{delta:+d}"
+    else:
+        return f"🔴 J{delta:+d}"
+
+
+def display_results(flights: list[FlightData]):
+    """Display results as formatted tables grouped by route."""
+    if not flights:
+        st.warning("No flight data to display.")
+        return
+
+    import pandas as pd
+
+    by_route = {}
+    for f in flights:
+        route = f.route or f"{f.departure_airport}-{f.arrival_airport}"
+        by_route.setdefault(route, []).append(f)
+
+    for route, route_flights in sorted(by_route.items()):
+        route_flights.sort(key=lambda f: (f.flight_date, f.departure_time))
+        non_departed = [f for f in route_flights if not f.departed]
+        best_delta = max((f.polaris_delta for f in non_departed), default=0)
+        icon = "🟢" if best_delta >= 3 else "🟡" if best_delta >= 0 else "🔴"
+        st.subheader(f"{icon} {route} — {len(route_flights)} flight{'s' if len(route_flights) != 1 else ''}")
+
+        rows = []
+        for f in route_flights:
+            aircraft_short = (f.aircraft_type
+                .replace('Boeing ', '').replace('Airbus ', 'A'))
+            rows.append({
+                "Date": f.flight_date,
+                "Day": f.day_of_week[:3],
+                "Flight": f.flight_number,
+                "Depart": f.departure_time[:5] if len(f.departure_time) > 5 else f.departure_time,
+                "Arrive": f.arrival_time[:5] if len(f.arrival_time) > 5 else f.arrival_time,
+                "Aircraft": aircraft_short,
+                "J Delta": format_delta(f.polaris_delta),
+                "J Avail": f"{f.polaris_available}/{f.polaris_capacity}",
+                "J SB": f"{f.polaris_standby} (UG:{f.polaris_upgrade_count} SA:{f.polaris_sa_count})",
+                "PP Avail": f"{f.premium_plus_available}/{f.premium_plus_capacity}",
+                "Y Avail": f"{f.economy_available}/{f.economy_capacity}",
+            })
+
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+
+def show_log_expander(label="Scraper Log"):
+    logs = log_handler.get_logs()
+    if logs:
+        with st.expander(f"📋 {label}", expanded=True):
+            st.code(logs, language="text")
+
+
+async def run_scrape_routes(
+    routes: list[tuple[str, str]],
+    dates: list[datetime],
+    headless: bool = True,
+):
+    """Discover flights + scrape availability for routes across multiple dates.
+
+    For each route × date, discovers flight numbers then scrapes each one.
+    Reuses a single browser session across all routes and dates.
+    """
+    browser = BrowserManager(headless=headless, context_ttl=15)
+    limiter = AdaptiveRateLimiter(base_min=3, base_max=6)
+    latest_data = load_latest_data()
+    now = datetime.now(tz=None)
+    run_timestamp = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    all_flights = []
+
+    total_tasks = len(routes) * len(dates)
+    task_num = 0
+
+    await browser.start()
+
+    try:
+        for orig, dest in routes:
+            route_key = f"{orig}-{dest}"
+
+            for date in dates:
+                task_num += 1
+                date_str = date.strftime("%Y-%m-%d")
+                day_name = date.strftime("%a")
+
+                logger.info(f"[{task_num}/{total_tasks}] Discovering {route_key} on {date_str} ({day_name})...")
+
+                nonstop_flights, _ = await auto_discover_flights(browser, orig, dest, date)
+
+                if not nonstop_flights:
+                    logger.warning(f"  {route_key} {date_str}: no UA nonstop flights found")
+                    continue
+
+                logger.info(f"  {route_key} {date_str}: found {len(nonstop_flights)} flights, scraping...")
+
+                for flight_num in nonstop_flights:
+                    flight_key = f"UA{flight_num}_{date_str}"
+                    await limiter.wait()
+
+                    result = await scrape_flight(browser, flight_num, date, orig, dest)
+
+                    if result:
+                        all_flights.append(result)
+                        limiter.record_success()
+                        latest_data.setdefault("flights", {})[flight_key] = {
+                            "flight_data": result.to_dict(),
+                            "last_scraped": run_timestamp,
+                        }
+                        logger.info(
+                            f"    ✓ UA{flight_num} {date_str}: "
+                            f"J {result.polaris_available}/{result.polaris_capacity} "
+                            f"(Δ{result.polaris_delta:+d}) | "
+                            f"PP {result.premium_plus_available}/{result.premium_plus_capacity} | "
+                            f"Y {result.economy_available}/{result.economy_capacity} | "
+                            f"{result.aircraft_type}"
+                        )
+                    else:
+                        limiter.record_failure()
+                        logger.warning(f"    ✗ UA{flight_num} {date_str}: scrape failed")
+
+        latest_data["last_updated"] = run_timestamp
+        save_latest_data(latest_data)
+
+    finally:
+        await browser.stop()
+
+    return all_flights
+
+
+# ─── Tabs ───
+tab_hub, tab_citypair = st.tabs(["🔍 Browse Hub Routes", "✈️ City Pair"])
+
+
+# ─── Tab 1: Hub Routes ───
+with tab_hub:
+    st.markdown("Pick a hub and select destinations to scrape. "
+                "These are known UA-operated Polaris routes (codeshares excluded).")
+
+    col1, col2 = st.columns([1, 3])
+    with col1:
+        hubs = sorted(KNOWN_UA_ROUTES.keys())
+        hub_airport = st.selectbox("Hub", hubs, index=hubs.index("LAX") if "LAX" in hubs else 0)
+
+    with col2:
+        st.markdown("**Days to check**")
+        day_cols = st.columns(5)
+        hub_days = []
+        for i in range(5):
+            with day_cols[i]:
+                checked = i == 1  # Default: tomorrow
+                if st.checkbox(get_day_label(i), value=checked, key=f"hub_day_{i}"):
+                    hub_days.append(i)
+
+    # Show known routes grouped by region
+    known = KNOWN_UA_ROUTES.get(hub_airport, {})
+    if known:
+        st.markdown(f"### Routes from {hub_airport}")
+
+        selected_dests = []
+        for region, destinations in known.items():
+            region_label = region.replace("_", " ").title()
+            st.markdown(f"**{region_label}**")
+
+            cols = st.columns(min(len(destinations), 6))
+            for i, dest in enumerate(destinations):
+                with cols[i % len(cols)]:
+                    if st.checkbox(dest, key=f"hub_{hub_airport}_{dest}"):
+                        selected_dests.append(dest)
+
+        if selected_dests and hub_days:
+            route_list = ', '.join(f'{hub_airport}-{d}' for d in selected_dests)
+            day_list = ', '.join(get_day_label(d) for d in hub_days)
+            st.markdown(f"**Selected:** {route_list} | **Days:** {day_list}")
+
+            scrape_btn = st.button(
+                f"🚀 Scrape {len(selected_dests)} route{'s' if len(selected_dests) != 1 else ''} × {len(hub_days)} day{'s' if len(hub_days) != 1 else ''}",
+                key="hub_scrape",
+                use_container_width=True
+            )
+
+            if scrape_btn:
+                routes = [(hub_airport, d) for d in selected_dests]
+                dates = [datetime.combine(datetime.now().date() + timedelta(days=d), datetime.min.time())
+                         for d in hub_days]
+                log_handler.clear()
+
+                with st.status(
+                    f"Scraping {len(routes)} routes × {len(dates)} days from {hub_airport}...",
+                    expanded=True
+                ) as status_widget:
+                    st.write(f"Routes: {route_list}")
+                    st.write(f"Days: {day_list}")
+                    st.write(f"Total: {len(routes) * len(dates)} route-days. ~30s per route-day. Watch the log below.")
+
+                    try:
+                        results = asyncio.run(
+                            run_scrape_routes(routes, dates, headless=headless)
+                        )
+                        if results:
+                            status_widget.update(
+                                label=f"Done! Scraped {len(results)} flights.",
+                                state="complete"
+                            )
+                            st.session_state['hub_results'] = results
+                        else:
+                            status_widget.update(label="No data captured", state="error")
+                    except Exception as e:
+                        status_widget.update(label=f"Error: {e}", state="error")
+                        st.exception(e)
+
+                show_log_expander()
+
+        elif selected_dests and not hub_days:
+            st.warning("Select at least one day to check.")
+
+        if 'hub_results' in st.session_state:
+            st.markdown("---")
+            st.markdown("### Results")
+            display_results(st.session_state['hub_results'])
+    else:
+        st.info(f"No curated routes for {hub_airport} yet. Use the City Pair tab instead.")
+
+
+# ─── Tab 2: City Pair ───
+with tab_citypair:
+    st.markdown("Enter any origin and destination — Northstar will discover UA flights and scrape availability.")
+
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        cp_origin = st.text_input("Origin", value="LAX", max_chars=3, key="cp_origin").upper()
+    with col2:
+        cp_dest = st.text_input("Destination", value="LHR", max_chars=3, key="cp_dest").upper()
+
+    st.markdown("**Days to check**")
+    cp_day_cols = st.columns(5)
+    cp_days = []
+    for i in range(5):
+        with cp_day_cols[i]:
+            checked = i == 1  # Default: tomorrow
+            if st.checkbox(get_day_label(i), value=checked, key=f"cp_day_{i}"):
+                cp_days.append(i)
+
+    cp_btn = st.button("🚀 Scrape Route", key="cp_scrape", use_container_width=True)
+
+    if cp_btn:
+        if not cp_origin or not cp_dest or len(cp_origin) != 3 or len(cp_dest) != 3:
+            st.error("Please enter valid 3-letter airport codes.")
+        elif not cp_days:
+            st.error("Select at least one day to check.")
+        else:
+            routes = [(cp_origin, cp_dest)]
+            dates = [datetime.combine(datetime.now().date() + timedelta(days=d), datetime.min.time())
+                     for d in cp_days]
+            day_list = ', '.join(get_day_label(d) for d in cp_days)
+            log_handler.clear()
+
+            with st.status(
+                f"Scraping {cp_origin}-{cp_dest} across {len(dates)} day{'s' if len(dates) != 1 else ''}...",
+                expanded=True
+            ) as status_widget:
+                st.write(f"Route: {cp_origin} → {cp_dest}")
+                st.write(f"Days: {day_list}")
+
+                try:
+                    results = asyncio.run(
+                        run_scrape_routes(routes, dates, headless=headless)
+                    )
+                    if results:
+                        status_widget.update(
+                            label=f"Scraped {len(results)} flights for {cp_origin}-{cp_dest}!",
+                            state="complete"
+                        )
+                        st.session_state['cp_results'] = results
+                    else:
+                        status_widget.update(label=f"No data for {cp_origin}-{cp_dest}", state="error")
+                        st.warning(
+                            f"No flight data captured. This could mean no UA nonstop flights "
+                            f"on this route, or the browser was blocked.\n\n"
+                            f"Try enabling **Show browser window** in the sidebar."
+                        )
+                except Exception as e:
+                    status_widget.update(label=f"Error: {e}", state="error")
+                    st.exception(e)
+
+            show_log_expander()
+
+    if 'cp_results' in st.session_state:
+        st.markdown("---")
+        display_results(st.session_state['cp_results'])

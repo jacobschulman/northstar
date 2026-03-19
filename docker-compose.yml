@@ -1,0 +1,15 @@
+services:
+  northstar:
+    build: .
+    container_name: northstar
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data        # Persistent scraped data
+      - ./config:/app/config    # Route config (editable)
+    restart: unless-stopped
+    # Chromium needs shared memory
+    shm_size: "2gb"
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
