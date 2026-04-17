@@ -1,0 +1,3266 @@
+{
+  "EWR": {
+    "hub": "EWR",
+    "source": "https://en.wikipedia.org/wiki/Newark_Liberty_International_Airport",
+    "destinations": [
+      {
+        "iata": "AGP",
+        "city": "Malaga",
+        "wiki_title": "M\u00e1laga Airport",
+        "country": "ES",
+        "international": true
+      },
+      {
+        "iata": "AMS",
+        "city": "Amsterdam",
+        "wiki_title": "Amsterdam Airport Schiphol",
+        "country": "NL",
+        "international": true
+      },
+      {
+        "iata": "ANC",
+        "city": "Anchorage",
+        "wiki_title": "Ted Stevens Anchorage International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ANU",
+        "city": "St. George",
+        "wiki_title": "V. C. Bird International Airport",
+        "country": "AG",
+        "international": true
+      },
+      {
+        "iata": "ATH",
+        "city": "Athens",
+        "wiki_title": "Athens International Airport",
+        "country": "GR",
+        "international": true
+      },
+      {
+        "iata": "ATL",
+        "city": "Atlanta",
+        "wiki_title": "Hartsfield\u2013Jackson Atlanta International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "AUA",
+        "city": "Oranjestad",
+        "wiki_title": "Queen Beatrix International Airport",
+        "country": "AW",
+        "international": true
+      },
+      {
+        "iata": "AUS",
+        "city": "Austin",
+        "wiki_title": "Austin\u2013Bergstrom International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BCN",
+        "city": "Barcelona",
+        "wiki_title": "Josep Tarradellas Barcelona\u2013El Prat Airport",
+        "country": "ES",
+        "international": true
+      },
+      {
+        "iata": "BDA",
+        "city": "Hamilton",
+        "wiki_title": "L.F. Wade International Airport",
+        "country": "BM",
+        "international": true
+      },
+      {
+        "iata": "BER",
+        "city": "Berlin",
+        "wiki_title": "Berlin Brandenburg Airport",
+        "country": "DE",
+        "international": true
+      },
+      {
+        "iata": "BGI",
+        "city": "Bridgetown",
+        "wiki_title": "Grantley Adams International Airport",
+        "country": "BB",
+        "international": true
+      },
+      {
+        "iata": "BIO",
+        "city": "Bilbao",
+        "wiki_title": "Bilbao Airport",
+        "country": "ES",
+        "international": true
+      },
+      {
+        "iata": "BNA",
+        "city": "Nashville",
+        "wiki_title": "Nashville International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BOG",
+        "city": "Bogota",
+        "wiki_title": "El Dorado International Airport",
+        "country": "CO",
+        "international": true
+      },
+      {
+        "iata": "BON",
+        "city": "Kralendijk",
+        "wiki_title": "Flamingo International Airport",
+        "country": "BQ",
+        "international": true
+      },
+      {
+        "iata": "BOS",
+        "city": "Boston",
+        "wiki_title": "Logan International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BQN",
+        "city": "Aguadilla",
+        "wiki_title": "Rafael Hern\u00e1ndez Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BRI",
+        "city": "Bari",
+        "wiki_title": "Bari Karol Wojty\u0142a Airport",
+        "country": "IT",
+        "international": true
+      },
+      {
+        "iata": "BRU",
+        "city": "Brussels",
+        "wiki_title": "Brussels Airport",
+        "country": "BE",
+        "international": true
+      },
+      {
+        "iata": "BUF",
+        "city": "Buffalo",
+        "wiki_title": "Buffalo Niagara International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BZE",
+        "city": "Belize City",
+        "wiki_title": "Philip S. W. Goldson International Airport",
+        "country": "BZ",
+        "international": true
+      },
+      {
+        "iata": "BZN",
+        "city": "Bozeman",
+        "wiki_title": "Bozeman Yellowstone International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CDG",
+        "city": "Paris",
+        "wiki_title": "Charles de Gaulle Airport",
+        "country": "FR",
+        "international": true
+      },
+      {
+        "iata": "CHS",
+        "city": "Charleston",
+        "wiki_title": "Charleston International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CLE",
+        "city": "Cleveland",
+        "wiki_title": "Cleveland Hopkins International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CLT",
+        "city": "Charlotte",
+        "wiki_title": "Charlotte Douglas International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CPT",
+        "city": "Cape Town",
+        "wiki_title": "Cape Town International Airport",
+        "country": "ZA",
+        "international": true
+      },
+      {
+        "iata": "CUN",
+        "city": "Cancun",
+        "wiki_title": "Canc\u00fan International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "CUR",
+        "city": "Willemstad",
+        "wiki_title": "Cura\u00e7ao International Airport",
+        "country": "CW",
+        "international": true
+      },
+      {
+        "iata": "DBV",
+        "city": "Dubrovnik",
+        "wiki_title": "Dubrovnik Airport",
+        "country": "HR",
+        "international": true
+      },
+      {
+        "iata": "DEL",
+        "city": "New Delhi",
+        "wiki_title": "Indira Gandhi International Airport",
+        "country": "IN",
+        "international": true
+      },
+      {
+        "iata": "DEN",
+        "city": "Denver",
+        "wiki_title": "Denver International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DFW",
+        "city": "Dallas-Fort Worth",
+        "wiki_title": "Dallas Fort Worth International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DOM",
+        "city": "Marigot",
+        "wiki_title": "Douglas\u2013Charles Airport",
+        "country": "DM",
+        "international": true
+      },
+      {
+        "iata": "DTW",
+        "city": "Detroit",
+        "wiki_title": "Detroit Metropolitan Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DUB",
+        "city": "Dublin",
+        "wiki_title": "Dublin Airport",
+        "country": "IE",
+        "international": true
+      },
+      {
+        "iata": "DXB",
+        "city": "Dubai",
+        "wiki_title": "Dubai International Airport",
+        "country": "AE",
+        "international": true
+      },
+      {
+        "iata": "EDI",
+        "city": "Edinburgh",
+        "wiki_title": "Edinburgh Airport",
+        "country": "GB",
+        "international": true
+      },
+      {
+        "iata": "EGE",
+        "city": "Eagle",
+        "wiki_title": "Eagle County Regional Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "EYW",
+        "city": "Key West",
+        "wiki_title": "Key West International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "FAO",
+        "city": "Faro",
+        "wiki_title": "Faro Airport",
+        "country": "PT",
+        "international": true
+      },
+      {
+        "iata": "FCA",
+        "city": "Kalispell",
+        "wiki_title": "Glacier Park International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "FCO",
+        "city": "Rome",
+        "wiki_title": "Rome Fiumicino Airport",
+        "country": "IT",
+        "international": true
+      },
+      {
+        "iata": "FLL",
+        "city": "Fort Lauderdale",
+        "wiki_title": "Fort Lauderdale\u2013Hollywood International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "FNC",
+        "city": "Funchal",
+        "wiki_title": "Madeira Airport",
+        "country": "PT",
+        "international": true
+      },
+      {
+        "iata": "FRA",
+        "city": "Frankfurt am Main",
+        "wiki_title": "Frankfurt Airport",
+        "country": "DE",
+        "international": true
+      },
+      {
+        "iata": "GCM",
+        "city": "Georgetown",
+        "wiki_title": "Owen Roberts International Airport",
+        "country": "KY",
+        "international": true
+      },
+      {
+        "iata": "GLA",
+        "city": "Glasgow",
+        "wiki_title": "Glasgow Airport",
+        "country": "GB",
+        "international": true
+      },
+      {
+        "iata": "GOH",
+        "city": "Nuuk",
+        "wiki_title": "Nuuk Airport",
+        "country": "GL",
+        "international": true
+      },
+      {
+        "iata": "GRU",
+        "city": "Sao Paulo",
+        "wiki_title": "S\u00e3o Paulo/Guarulhos International Airport",
+        "country": "BR",
+        "international": true
+      },
+      {
+        "iata": "GUA",
+        "city": "Guatemala City",
+        "wiki_title": "La Aurora International Airport",
+        "country": "GT",
+        "international": true
+      },
+      {
+        "iata": "GVA",
+        "city": "Geneva",
+        "wiki_title": "Geneva Airport",
+        "country": "CH",
+        "international": true
+      },
+      {
+        "iata": "HDN",
+        "city": "Hayden",
+        "wiki_title": "Yampa Valley Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "HND",
+        "city": "Tokyo",
+        "wiki_title": "Haneda Airport",
+        "country": "JP",
+        "international": true
+      },
+      {
+        "iata": "HNL",
+        "city": "Honolulu",
+        "wiki_title": "Daniel K. Inouye International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IAD",
+        "city": "Washington",
+        "wiki_title": "Dulles International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IAH",
+        "city": "Houston",
+        "wiki_title": "George Bush Intercontinental Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ICN",
+        "city": "Seoul",
+        "wiki_title": "Incheon International Airport",
+        "country": "KR",
+        "international": true
+      },
+      {
+        "iata": "JAC",
+        "city": "Jackson",
+        "wiki_title": "Jackson Hole Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "JAX",
+        "city": "Jacksonville",
+        "wiki_title": "Jacksonville International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "JNB",
+        "city": "Johannesburg",
+        "wiki_title": "O. R. Tambo International Airport",
+        "country": "ZA",
+        "international": true
+      },
+      {
+        "iata": "KEF",
+        "city": "Reykjavik",
+        "wiki_title": "Keflav\u00edk International Airport",
+        "country": "IS",
+        "international": true
+      },
+      {
+        "iata": "LAS",
+        "city": "Las Vegas",
+        "wiki_title": "Harry Reid International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LAX",
+        "city": "Los Angeles",
+        "wiki_title": "Los Angeles International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LHR",
+        "city": "London",
+        "wiki_title": "Heathrow Airport",
+        "country": "GB",
+        "international": true
+      },
+      {
+        "iata": "LIM",
+        "city": "Lima",
+        "wiki_title": "Jorge Ch\u00e1vez International Airport",
+        "country": "PE",
+        "international": true
+      },
+      {
+        "iata": "LIS",
+        "city": "Lisbon",
+        "wiki_title": "Lisbon Airport",
+        "country": "PT",
+        "international": true
+      },
+      {
+        "iata": "MAD",
+        "city": "Madrid",
+        "wiki_title": "Madrid\u2013Barajas Airport",
+        "country": "ES",
+        "international": true
+      },
+      {
+        "iata": "MBJ",
+        "city": "Montego Bay",
+        "wiki_title": "Sangster International Airport",
+        "country": "JM",
+        "international": true
+      },
+      {
+        "iata": "MCI",
+        "city": "Kansas City",
+        "wiki_title": "Kansas City International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MCO",
+        "city": "Orlando",
+        "wiki_title": "Orlando International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MEX",
+        "city": "Mexico City",
+        "wiki_title": "Mexico City International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "MIA",
+        "city": "Miami",
+        "wiki_title": "Miami International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MSP",
+        "city": "Minneapolis",
+        "wiki_title": "Minneapolis\u2013Saint Paul International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MSY",
+        "city": "New Orleans",
+        "wiki_title": "Louis Armstrong New Orleans International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MTJ",
+        "city": "Montrose",
+        "wiki_title": "Montrose Regional Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MUC",
+        "city": "Munich",
+        "wiki_title": "Munich Airport",
+        "country": "DE",
+        "international": true
+      },
+      {
+        "iata": "MXP",
+        "city": "Milan",
+        "wiki_title": "Milan Malpensa Airport",
+        "country": "IT",
+        "international": true
+      },
+      {
+        "iata": "MYR",
+        "city": "Myrtle Beach",
+        "wiki_title": "Myrtle Beach International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "NAP",
+        "city": "Napoli",
+        "wiki_title": "Naples International Airport",
+        "country": "IT",
+        "international": true
+      },
+      {
+        "iata": "NAS",
+        "city": "Nassau",
+        "wiki_title": "Lynden Pindling International Airport",
+        "country": "BS",
+        "international": true
+      },
+      {
+        "iata": "NCE",
+        "city": "Nice",
+        "wiki_title": "Nice C\u00f4te d'Azur Airport",
+        "country": "FR",
+        "international": true
+      },
+      {
+        "iata": "NCT",
+        "city": "Nicoya/Guanacate",
+        "wiki_title": "Guanacaste Airport",
+        "country": "CR",
+        "international": true
+      },
+      {
+        "iata": "NRT",
+        "city": "Tokyo",
+        "wiki_title": "Narita International Airport",
+        "country": "JP",
+        "international": true
+      },
+      {
+        "iata": "OPO",
+        "city": "Porto",
+        "wiki_title": "Porto Airport",
+        "country": "PT",
+        "international": true
+      },
+      {
+        "iata": "ORD",
+        "city": "Chicago",
+        "wiki_title": "O'Hare International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PBI",
+        "city": "West Palm Beach",
+        "wiki_title": "Palm Beach International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PDX",
+        "city": "Portland",
+        "wiki_title": "Portland International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PHX",
+        "city": "Phoenix",
+        "wiki_title": "Phoenix Sky Harbor International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PLS",
+        "city": "Providenciales Island",
+        "wiki_title": "Providenciales International Airport",
+        "country": "TC",
+        "international": true
+      },
+      {
+        "iata": "PMI",
+        "city": "Palma De Mallorca",
+        "wiki_title": "Palma de Mallorca Airport",
+        "country": "ES",
+        "international": true
+      },
+      {
+        "iata": "PMO",
+        "city": "Palermo",
+        "wiki_title": "Palermo Airport",
+        "country": "IT",
+        "international": true
+      },
+      {
+        "iata": "POP",
+        "city": "Puerto Plata",
+        "wiki_title": "Gregorio Luper\u00f3n International Airport",
+        "country": "DO",
+        "international": true
+      },
+      {
+        "iata": "POS",
+        "city": "Port of Spain",
+        "wiki_title": "Piarco International Airport",
+        "country": "TT",
+        "international": true
+      },
+      {
+        "iata": "PSP",
+        "city": "Palm Springs",
+        "wiki_title": "Palm Springs International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PTY",
+        "city": "Tocumen",
+        "wiki_title": "Tocumen International Airport",
+        "country": "PA",
+        "international": true
+      },
+      {
+        "iata": "PUJ",
+        "city": "Punta Cana",
+        "wiki_title": "Punta Cana International Airport",
+        "country": "DO",
+        "international": true
+      },
+      {
+        "iata": "PVR",
+        "city": "Puerto Vallarta",
+        "wiki_title": "Licenciado Gustavo D\u00edaz Ordaz International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "RAK",
+        "city": "Marrakech",
+        "wiki_title": "Marrakesh Menara Airport",
+        "country": "MA",
+        "international": true
+      },
+      {
+        "iata": "RDU",
+        "city": "Raleigh/Durham",
+        "wiki_title": "Raleigh\u2013Durham International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "RSW",
+        "city": "Fort Myers",
+        "wiki_title": "Southwest Florida International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SAL",
+        "city": "Santa Clara",
+        "wiki_title": "El Salvador International Airport",
+        "country": "SV",
+        "international": true
+      },
+      {
+        "iata": "SAN",
+        "city": "San Diego",
+        "wiki_title": "San Diego International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SAP",
+        "city": "La Mesa",
+        "wiki_title": "Ram\u00f3n Villeda Morales International Airport",
+        "country": "HN",
+        "international": true
+      },
+      {
+        "iata": "SAT",
+        "city": "San Antonio",
+        "wiki_title": "San Antonio International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SAV",
+        "city": "Savannah",
+        "wiki_title": "Savannah/Hilton Head International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SCQ",
+        "city": "Santiago de Compostela",
+        "wiki_title": "Santiago\u2013Rosal\u00eda de Castro Airport",
+        "country": "ES",
+        "international": true
+      },
+      {
+        "iata": "SDQ",
+        "city": "Santo Domingo",
+        "wiki_title": "Las Am\u00e9ricas International Airport",
+        "country": "DO",
+        "international": true
+      },
+      {
+        "iata": "SEA",
+        "city": "Seattle",
+        "wiki_title": "Seattle\u2013Tacoma International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SFO",
+        "city": "San Francisco",
+        "wiki_title": "San Francisco International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SJD",
+        "city": "San Jose del Cabo",
+        "wiki_title": "Los Cabos International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "SJO",
+        "city": "San Jose",
+        "wiki_title": "Juan Santamar\u00eda International Airport",
+        "country": "CR",
+        "international": true
+      },
+      {
+        "iata": "SJU",
+        "city": "San Juan",
+        "wiki_title": "Luis Mu\u00f1oz Mar\u00edn International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SKB",
+        "city": "Basseterre",
+        "wiki_title": "Robert L. Bradshaw International Airport",
+        "country": "KN",
+        "international": true
+      },
+      {
+        "iata": "SLC",
+        "city": "Salt Lake City",
+        "wiki_title": "Salt Lake City International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SMF",
+        "city": "Sacramento",
+        "wiki_title": "Sacramento International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SNA",
+        "city": "Santa Ana",
+        "wiki_title": "John Wayne Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SNN",
+        "city": "Shannon",
+        "wiki_title": "Shannon Airport",
+        "country": "IE",
+        "international": true
+      },
+      {
+        "iata": "SPU",
+        "city": "Split",
+        "wiki_title": "Split Airport",
+        "country": "HR",
+        "international": true
+      },
+      {
+        "iata": "SRQ",
+        "city": "Sarasota/Bradenton",
+        "wiki_title": "Sarasota\u2013Bradenton International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "STI",
+        "city": "Santiago",
+        "wiki_title": "Cibao International Airport",
+        "country": "DO",
+        "international": true
+      },
+      {
+        "iata": "STL",
+        "city": "St Louis",
+        "wiki_title": "St. Louis Lambert International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "STT",
+        "city": "Charlotte Amalie",
+        "wiki_title": "Cyril E. King Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SXM",
+        "city": "Saint Martin",
+        "wiki_title": "Princess Juliana International Airport",
+        "country": "SX",
+        "international": true
+      },
+      {
+        "iata": "TLV",
+        "city": "Tel Aviv",
+        "wiki_title": "Ben Gurion Airport",
+        "country": "IL",
+        "international": true
+      },
+      {
+        "iata": "TPA",
+        "city": "Tampa",
+        "wiki_title": "Tampa International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "TQO",
+        "city": "Tulum",
+        "wiki_title": "Tulum International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "UVF",
+        "city": "Vieux Fort",
+        "wiki_title": "Hewanorra International Airport",
+        "country": "LC",
+        "international": true
+      },
+      {
+        "iata": "VCE",
+        "city": "Venezia",
+        "wiki_title": "Venice Marco Polo Airport",
+        "country": "IT",
+        "international": true
+      },
+      {
+        "iata": "YVR",
+        "city": "Richmond",
+        "wiki_title": "Vancouver International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "ZRH",
+        "city": "Zurich",
+        "wiki_title": "Zurich Airport",
+        "country": "CH",
+        "international": true
+      }
+    ]
+  },
+  "IAD": {
+    "hub": "IAD",
+    "source": "https://en.wikipedia.org/wiki/Washington_Dulles_International_Airport",
+    "destinations": [
+      {
+        "iata": "ACC",
+        "city": "Accra",
+        "wiki_title": "Accra International Airport",
+        "country": "GH",
+        "international": true
+      },
+      {
+        "iata": "AMS",
+        "city": "Amsterdam",
+        "wiki_title": "Amsterdam Airport Schiphol",
+        "country": "NL",
+        "international": true
+      },
+      {
+        "iata": "ANC",
+        "city": "Anchorage",
+        "wiki_title": "Ted Stevens Anchorage International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ATH",
+        "city": "Athens",
+        "wiki_title": "Athens International Airport",
+        "country": "GR",
+        "international": true
+      },
+      {
+        "iata": "ATL",
+        "city": "Atlanta",
+        "wiki_title": "Hartsfield\u2013Jackson Atlanta International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "AUA",
+        "city": "Oranjestad",
+        "wiki_title": "Queen Beatrix International Airport",
+        "country": "AW",
+        "international": true
+      },
+      {
+        "iata": "AUS",
+        "city": "Austin",
+        "wiki_title": "Austin\u2013Bergstrom International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BCN",
+        "city": "Barcelona",
+        "wiki_title": "Josep Tarradellas Barcelona\u2013El Prat Airport",
+        "country": "ES",
+        "international": true
+      },
+      {
+        "iata": "BDL",
+        "city": "Windsor Locks",
+        "wiki_title": "Bradley International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BGI",
+        "city": "Bridgetown",
+        "wiki_title": "Grantley Adams International Airport",
+        "country": "BB",
+        "international": true
+      },
+      {
+        "iata": "BNA",
+        "city": "Nashville",
+        "wiki_title": "Nashville International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BOS",
+        "city": "Boston",
+        "wiki_title": "Logan International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BRU",
+        "city": "Brussels",
+        "wiki_title": "Brussels Airport",
+        "country": "BE",
+        "international": true
+      },
+      {
+        "iata": "BZN",
+        "city": "Bozeman",
+        "wiki_title": "Bozeman Yellowstone International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CDG",
+        "city": "Paris",
+        "wiki_title": "Charles de Gaulle Airport",
+        "country": "FR",
+        "international": true
+      },
+      {
+        "iata": "CHS",
+        "city": "Charleston",
+        "wiki_title": "Charleston International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CLE",
+        "city": "Cleveland",
+        "wiki_title": "Cleveland Hopkins International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CLT",
+        "city": "Charlotte",
+        "wiki_title": "Charlotte Douglas International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CMH",
+        "city": "Columbus",
+        "wiki_title": "John Glenn Columbus International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CPT",
+        "city": "Cape Town",
+        "wiki_title": "Cape Town International Airport",
+        "country": "ZA",
+        "international": true
+      },
+      {
+        "iata": "CUN",
+        "city": "Cancun",
+        "wiki_title": "Canc\u00fan International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "DEN",
+        "city": "Denver",
+        "wiki_title": "Denver International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DFW",
+        "city": "Dallas-Fort Worth",
+        "wiki_title": "Dallas Fort Worth International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DUB",
+        "city": "Dublin",
+        "wiki_title": "Dublin Airport",
+        "country": "IE",
+        "international": true
+      },
+      {
+        "iata": "EDI",
+        "city": "Edinburgh",
+        "wiki_title": "Edinburgh Airport",
+        "country": "GB",
+        "international": true
+      },
+      {
+        "iata": "EGE",
+        "city": "Eagle",
+        "wiki_title": "Eagle County Regional Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "EWR",
+        "city": "Newark",
+        "wiki_title": "Newark Liberty International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "FCO",
+        "city": "Rome",
+        "wiki_title": "Rome Fiumicino Airport",
+        "country": "IT",
+        "international": true
+      },
+      {
+        "iata": "FLL",
+        "city": "Fort Lauderdale",
+        "wiki_title": "Fort Lauderdale\u2013Hollywood International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "FRA",
+        "city": "Frankfurt am Main",
+        "wiki_title": "Frankfurt Airport",
+        "country": "DE",
+        "international": true
+      },
+      {
+        "iata": "GCM",
+        "city": "Georgetown",
+        "wiki_title": "Owen Roberts International Airport",
+        "country": "KY",
+        "international": true
+      },
+      {
+        "iata": "GRU",
+        "city": "Sao Paulo",
+        "wiki_title": "S\u00e3o Paulo/Guarulhos International Airport",
+        "country": "BR",
+        "international": true
+      },
+      {
+        "iata": "GUA",
+        "city": "Guatemala City",
+        "wiki_title": "La Aurora International Airport",
+        "country": "GT",
+        "international": true
+      },
+      {
+        "iata": "GVA",
+        "city": "Geneva",
+        "wiki_title": "Geneva Airport",
+        "country": "CH",
+        "international": true
+      },
+      {
+        "iata": "HDN",
+        "city": "Hayden",
+        "wiki_title": "Yampa Valley Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "HND",
+        "city": "Tokyo",
+        "wiki_title": "Haneda Airport",
+        "country": "JP",
+        "international": true
+      },
+      {
+        "iata": "HNL",
+        "city": "Honolulu",
+        "wiki_title": "Daniel K. Inouye International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IAH",
+        "city": "Houston",
+        "wiki_title": "George Bush Intercontinental Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IND",
+        "city": "Indianapolis",
+        "wiki_title": "Indianapolis International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "JAC",
+        "city": "Jackson",
+        "wiki_title": "Jackson Hole Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "JAX",
+        "city": "Jacksonville",
+        "wiki_title": "Jacksonville International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "KEF",
+        "city": "Reykjavik",
+        "wiki_title": "Keflav\u00edk International Airport",
+        "country": "IS",
+        "international": true
+      },
+      {
+        "iata": "LAS",
+        "city": "Las Vegas",
+        "wiki_title": "Harry Reid International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LAX",
+        "city": "Los Angeles",
+        "wiki_title": "Los Angeles International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LHR",
+        "city": "London",
+        "wiki_title": "Heathrow Airport",
+        "country": "GB",
+        "international": true
+      },
+      {
+        "iata": "LIS",
+        "city": "Lisbon",
+        "wiki_title": "Lisbon Airport",
+        "country": "PT",
+        "international": true
+      },
+      {
+        "iata": "LOS",
+        "city": "Lagos",
+        "wiki_title": "Murtala Muhammed International Airport",
+        "country": "NG",
+        "international": true
+      },
+      {
+        "iata": "MAD",
+        "city": "Madrid",
+        "wiki_title": "Madrid\u2013Barajas Airport",
+        "country": "ES",
+        "international": true
+      },
+      {
+        "iata": "MBJ",
+        "city": "Montego Bay",
+        "wiki_title": "Sangster International Airport",
+        "country": "JM",
+        "international": true
+      },
+      {
+        "iata": "MCO",
+        "city": "Orlando",
+        "wiki_title": "Orlando International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MEX",
+        "city": "Mexico City",
+        "wiki_title": "Mexico City International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "MIA",
+        "city": "Miami",
+        "wiki_title": "Miami International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MSY",
+        "city": "New Orleans",
+        "wiki_title": "Louis Armstrong New Orleans International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MUC",
+        "city": "Munich",
+        "wiki_title": "Munich Airport",
+        "country": "DE",
+        "international": true
+      },
+      {
+        "iata": "NCE",
+        "city": "Nice",
+        "wiki_title": "Nice C\u00f4te d'Azur Airport",
+        "country": "FR",
+        "international": true
+      },
+      {
+        "iata": "ORD",
+        "city": "Chicago",
+        "wiki_title": "O'Hare International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ORF",
+        "city": "Norfolk",
+        "wiki_title": "Norfolk International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PBI",
+        "city": "West Palm Beach",
+        "wiki_title": "Palm Beach International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PDX",
+        "city": "Portland",
+        "wiki_title": "Portland International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PHX",
+        "city": "Phoenix",
+        "wiki_title": "Phoenix Sky Harbor International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PIT",
+        "city": "Pittsburgh",
+        "wiki_title": "Pittsburgh International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PLS",
+        "city": "Providenciales Island",
+        "wiki_title": "Providenciales International Airport",
+        "country": "TC",
+        "international": true
+      },
+      {
+        "iata": "PSP",
+        "city": "Palm Springs",
+        "wiki_title": "Palm Springs International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PUJ",
+        "city": "Punta Cana",
+        "wiki_title": "Punta Cana International Airport",
+        "country": "DO",
+        "international": true
+      },
+      {
+        "iata": "RDU",
+        "city": "Raleigh/Durham",
+        "wiki_title": "Raleigh\u2013Durham International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "RSW",
+        "city": "Fort Myers",
+        "wiki_title": "Southwest Florida International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SAL",
+        "city": "Santa Clara",
+        "wiki_title": "El Salvador International Airport",
+        "country": "SV",
+        "international": true
+      },
+      {
+        "iata": "SAN",
+        "city": "San Diego",
+        "wiki_title": "San Diego International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SAT",
+        "city": "San Antonio",
+        "wiki_title": "San Antonio International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SEA",
+        "city": "Seattle",
+        "wiki_title": "Seattle\u2013Tacoma International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SFO",
+        "city": "San Francisco",
+        "wiki_title": "San Francisco International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SJO",
+        "city": "San Jose",
+        "wiki_title": "Juan Santamar\u00eda International Airport",
+        "country": "CR",
+        "international": true
+      },
+      {
+        "iata": "SJU",
+        "city": "San Juan",
+        "wiki_title": "Luis Mu\u00f1oz Mar\u00edn International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SLC",
+        "city": "Salt Lake City",
+        "wiki_title": "Salt Lake City International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SMF",
+        "city": "Sacramento",
+        "wiki_title": "Sacramento International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "STT",
+        "city": "Charlotte Amalie",
+        "wiki_title": "Cyril E. King Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SXM",
+        "city": "Saint Martin",
+        "wiki_title": "Princess Juliana International Airport",
+        "country": "SX",
+        "international": true
+      },
+      {
+        "iata": "TLV",
+        "city": "Tel Aviv",
+        "wiki_title": "Ben Gurion Airport",
+        "country": "IL",
+        "international": true
+      },
+      {
+        "iata": "TPA",
+        "city": "Tampa",
+        "wiki_title": "Tampa International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "VCE",
+        "city": "Venezia",
+        "wiki_title": "Venice Marco Polo Airport",
+        "country": "IT",
+        "international": true
+      },
+      {
+        "iata": "YVR",
+        "city": "Richmond",
+        "wiki_title": "Vancouver International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "YYC",
+        "city": "Calgary",
+        "wiki_title": "Calgary International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "ZRH",
+        "city": "Zurich",
+        "wiki_title": "Zurich Airport",
+        "country": "CH",
+        "international": true
+      }
+    ]
+  },
+  "SFO": {
+    "hub": "SFO",
+    "source": "https://en.wikipedia.org/wiki/San_Francisco_International_Airport",
+    "destinations": [
+      {
+        "iata": "ADL",
+        "city": "Adelaide",
+        "wiki_title": "Adelaide Airport",
+        "country": "AU",
+        "international": true
+      },
+      {
+        "iata": "AKL",
+        "city": "Auckland",
+        "wiki_title": "Auckland Airport",
+        "country": "NZ",
+        "international": true
+      },
+      {
+        "iata": "AMS",
+        "city": "Amsterdam",
+        "wiki_title": "Amsterdam Airport Schiphol",
+        "country": "NL",
+        "international": true
+      },
+      {
+        "iata": "ANC",
+        "city": "Anchorage",
+        "wiki_title": "Ted Stevens Anchorage International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ATL",
+        "city": "Atlanta",
+        "wiki_title": "Hartsfield\u2013Jackson Atlanta International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "AUS",
+        "city": "Austin",
+        "wiki_title": "Austin\u2013Bergstrom International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BCN",
+        "city": "Barcelona",
+        "wiki_title": "Josep Tarradellas Barcelona\u2013El Prat Airport",
+        "country": "ES",
+        "international": true
+      },
+      {
+        "iata": "BNA",
+        "city": "Nashville",
+        "wiki_title": "Nashville International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BNE",
+        "city": "Brisbane",
+        "wiki_title": "Brisbane Airport",
+        "country": "AU",
+        "international": true
+      },
+      {
+        "iata": "BOI",
+        "city": "Boise",
+        "wiki_title": "Boise Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BOS",
+        "city": "Boston",
+        "wiki_title": "Logan International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BUR",
+        "city": "Burbank",
+        "wiki_title": "Hollywood Burbank Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BWI",
+        "city": "Baltimore",
+        "wiki_title": "Baltimore/Washington International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BZN",
+        "city": "Bozeman",
+        "wiki_title": "Bozeman Yellowstone International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CDG",
+        "city": "Paris",
+        "wiki_title": "Charles de Gaulle Airport",
+        "country": "FR",
+        "international": true
+      },
+      {
+        "iata": "CHC",
+        "city": "Christchurch",
+        "wiki_title": "Christchurch Airport",
+        "country": "NZ",
+        "international": true
+      },
+      {
+        "iata": "CLE",
+        "city": "Cleveland",
+        "wiki_title": "Cleveland Hopkins International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CMH",
+        "city": "Columbus",
+        "wiki_title": "John Glenn Columbus International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CUN",
+        "city": "Cancun",
+        "wiki_title": "Canc\u00fan International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "DCA",
+        "city": "Washington",
+        "wiki_title": "Ronald Reagan Washington National Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DEN",
+        "city": "Denver",
+        "wiki_title": "Denver International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DFW",
+        "city": "Dallas-Fort Worth",
+        "wiki_title": "Dallas Fort Worth International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "EUG",
+        "city": "Eugene",
+        "wiki_title": "Eugene Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "EWR",
+        "city": "Newark",
+        "wiki_title": "Newark Liberty International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "FCO",
+        "city": "Rome",
+        "wiki_title": "Rome Fiumicino Airport",
+        "country": "IT",
+        "international": true
+      },
+      {
+        "iata": "FLL",
+        "city": "Fort Lauderdale",
+        "wiki_title": "Fort Lauderdale\u2013Hollywood International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "FRA",
+        "city": "Frankfurt am Main",
+        "wiki_title": "Frankfurt Airport",
+        "country": "DE",
+        "international": true
+      },
+      {
+        "iata": "GEG",
+        "city": "Spokane",
+        "wiki_title": "Spokane International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "HKG",
+        "city": "Hong Kong",
+        "wiki_title": "Hong Kong International Airport",
+        "country": "HK",
+        "international": true
+      },
+      {
+        "iata": "HND",
+        "city": "Tokyo",
+        "wiki_title": "Haneda Airport",
+        "country": "JP",
+        "international": true
+      },
+      {
+        "iata": "HNL",
+        "city": "Honolulu",
+        "wiki_title": "Daniel K. Inouye International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IAD",
+        "city": "Washington",
+        "wiki_title": "Dulles International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IAH",
+        "city": "Houston",
+        "wiki_title": "George Bush Intercontinental Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ICN",
+        "city": "Seoul",
+        "wiki_title": "Incheon International Airport",
+        "country": "KR",
+        "international": true
+      },
+      {
+        "iata": "IND",
+        "city": "Indianapolis",
+        "wiki_title": "Indianapolis International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "JAC",
+        "city": "Jackson",
+        "wiki_title": "Jackson Hole Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "KIX",
+        "city": "Osaka",
+        "wiki_title": "Kansai International Airport",
+        "country": "JP",
+        "international": true
+      },
+      {
+        "iata": "KOA",
+        "city": "Kailua-Kona",
+        "wiki_title": "Kona International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LAS",
+        "city": "Las Vegas",
+        "wiki_title": "Harry Reid International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LAX",
+        "city": "Los Angeles",
+        "wiki_title": "Los Angeles International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LHR",
+        "city": "London",
+        "wiki_title": "Heathrow Airport",
+        "country": "GB",
+        "international": true
+      },
+      {
+        "iata": "LIH",
+        "city": "Lihue",
+        "wiki_title": "Lihue Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MCI",
+        "city": "Kansas City",
+        "wiki_title": "Kansas City International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MCO",
+        "city": "Orlando",
+        "wiki_title": "Orlando International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MEL",
+        "city": "Melbourne",
+        "wiki_title": "Melbourne Airport",
+        "country": "AU",
+        "international": true
+      },
+      {
+        "iata": "MEX",
+        "city": "Mexico City",
+        "wiki_title": "Mexico City International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "MFR",
+        "city": "Medford",
+        "wiki_title": "Rogue Valley International\u2013Medford Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MIA",
+        "city": "Miami",
+        "wiki_title": "Miami International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MNL",
+        "city": "Manila",
+        "wiki_title": "Ninoy Aquino International Airport",
+        "country": "PH",
+        "international": true
+      },
+      {
+        "iata": "MSP",
+        "city": "Minneapolis",
+        "wiki_title": "Minneapolis\u2013Saint Paul International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MSY",
+        "city": "New Orleans",
+        "wiki_title": "Louis Armstrong New Orleans International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MUC",
+        "city": "Munich",
+        "wiki_title": "Munich Airport",
+        "country": "DE",
+        "international": true
+      },
+      {
+        "iata": "NCT",
+        "city": "Nicoya/Guanacate",
+        "wiki_title": "Guanacaste Airport",
+        "country": "CR",
+        "international": true
+      },
+      {
+        "iata": "NRT",
+        "city": "Tokyo",
+        "wiki_title": "Narita International Airport",
+        "country": "JP",
+        "international": true
+      },
+      {
+        "iata": "OGG",
+        "city": "Kahului",
+        "wiki_title": "Kahului Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ONO",
+        "city": "Ontario",
+        "wiki_title": "Ontario International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ORD",
+        "city": "Chicago",
+        "wiki_title": "O'Hare International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PDX",
+        "city": "Portland",
+        "wiki_title": "Portland International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PEK",
+        "city": "Beijing",
+        "wiki_title": "Beijing Capital International Airport",
+        "country": "CN",
+        "international": true
+      },
+      {
+        "iata": "PHL",
+        "city": "Philadelphia",
+        "wiki_title": "Philadelphia International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PHX",
+        "city": "Phoenix",
+        "wiki_title": "Phoenix Sky Harbor International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PIT",
+        "city": "Pittsburgh",
+        "wiki_title": "Pittsburgh International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PSP",
+        "city": "Palm Springs",
+        "wiki_title": "Palm Springs International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PVG",
+        "city": "Shanghai",
+        "wiki_title": "Shanghai Pudong International Airport",
+        "country": "CN",
+        "international": true
+      },
+      {
+        "iata": "PVR",
+        "city": "Puerto Vallarta",
+        "wiki_title": "Licenciado Gustavo D\u00edaz Ordaz International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "RDU",
+        "city": "Raleigh/Durham",
+        "wiki_title": "Raleigh\u2013Durham International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "RNO",
+        "city": "Reno",
+        "wiki_title": "Reno\u2013Tahoe International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "RSW",
+        "city": "Fort Myers",
+        "wiki_title": "Southwest Florida International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SAN",
+        "city": "San Diego",
+        "wiki_title": "San Diego International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SAT",
+        "city": "San Antonio",
+        "wiki_title": "San Antonio International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SBA",
+        "city": "Santa Barbara",
+        "wiki_title": "Santa Barbara Municipal Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SBP",
+        "city": "San Luis Obispo",
+        "wiki_title": "San Luis Obispo County Regional Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SEA",
+        "city": "Seattle",
+        "wiki_title": "Seattle\u2013Tacoma International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SIN",
+        "city": "Singapore",
+        "wiki_title": "Changi Airport",
+        "country": "SG",
+        "international": true
+      },
+      {
+        "iata": "SJD",
+        "city": "San Jose del Cabo",
+        "wiki_title": "Los Cabos International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "SJO",
+        "city": "San Jose",
+        "wiki_title": "Juan Santamar\u00eda International Airport",
+        "country": "CR",
+        "international": true
+      },
+      {
+        "iata": "SLC",
+        "city": "Salt Lake City",
+        "wiki_title": "Salt Lake City International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SNA",
+        "city": "Santa Ana",
+        "wiki_title": "John Wayne Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "STL",
+        "city": "St Louis",
+        "wiki_title": "St. Louis Lambert International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SYD",
+        "city": "Sydney",
+        "wiki_title": "Sydney Airport",
+        "country": "AU",
+        "international": true
+      },
+      {
+        "iata": "TPA",
+        "city": "Tampa",
+        "wiki_title": "Tampa International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "TPE",
+        "city": "Taipei",
+        "wiki_title": "Taoyuan International Airport",
+        "country": "TW",
+        "international": true
+      },
+      {
+        "iata": "YUL",
+        "city": "Dorval",
+        "wiki_title": "Montr\u00e9al\u2013Trudeau International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "YVR",
+        "city": "Richmond",
+        "wiki_title": "Vancouver International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "YYC",
+        "city": "Calgary",
+        "wiki_title": "Calgary International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "YYZ",
+        "city": "Mississauga",
+        "wiki_title": "Toronto Pearson International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "ZRH",
+        "city": "Zurich",
+        "wiki_title": "Zurich Airport",
+        "country": "CH",
+        "international": true
+      }
+    ]
+  },
+  "LAX": {
+    "hub": "LAX",
+    "source": "https://en.wikipedia.org/wiki/Los_Angeles_International_Airport",
+    "destinations": [
+      {
+        "iata": "AUS",
+        "city": "Austin",
+        "wiki_title": "Austin\u2013Bergstrom International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BKK",
+        "city": "Bangkok",
+        "wiki_title": "Suvarnabhumi Airport",
+        "country": "TH",
+        "international": true
+      },
+      {
+        "iata": "BOS",
+        "city": "Boston",
+        "wiki_title": "Logan International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BWI",
+        "city": "Baltimore",
+        "wiki_title": "Baltimore/Washington International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BZN",
+        "city": "Bozeman",
+        "wiki_title": "Bozeman Yellowstone International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CLE",
+        "city": "Cleveland",
+        "wiki_title": "Cleveland Hopkins International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CMH",
+        "city": "Columbus",
+        "wiki_title": "John Glenn Columbus International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CUN",
+        "city": "Cancun",
+        "wiki_title": "Canc\u00fan International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "DEN",
+        "city": "Denver",
+        "wiki_title": "Denver International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "EWR",
+        "city": "Newark",
+        "wiki_title": "Newark Liberty International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "GUA",
+        "city": "Guatemala City",
+        "wiki_title": "La Aurora International Airport",
+        "country": "GT",
+        "international": true
+      },
+      {
+        "iata": "HKG",
+        "city": "Hong Kong",
+        "wiki_title": "Hong Kong International Airport",
+        "country": "HK",
+        "international": true
+      },
+      {
+        "iata": "HND",
+        "city": "Tokyo",
+        "wiki_title": "Haneda Airport",
+        "country": "JP",
+        "international": true
+      },
+      {
+        "iata": "HNL",
+        "city": "Honolulu",
+        "wiki_title": "Daniel K. Inouye International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IAD",
+        "city": "Washington",
+        "wiki_title": "Dulles International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IAH",
+        "city": "Houston",
+        "wiki_title": "George Bush Intercontinental Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "JAC",
+        "city": "Jackson",
+        "wiki_title": "Jackson Hole Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "KOA",
+        "city": "Kailua-Kona",
+        "wiki_title": "Kona International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LAS",
+        "city": "Las Vegas",
+        "wiki_title": "Harry Reid International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LHR",
+        "city": "London",
+        "wiki_title": "Heathrow Airport",
+        "country": "GB",
+        "international": true
+      },
+      {
+        "iata": "LIH",
+        "city": "Lihue",
+        "wiki_title": "Lihue Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MCO",
+        "city": "Orlando",
+        "wiki_title": "Orlando International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MEL",
+        "city": "Melbourne",
+        "wiki_title": "Melbourne Airport",
+        "country": "AU",
+        "international": true
+      },
+      {
+        "iata": "NCT",
+        "city": "Nicoya/Guanacate",
+        "wiki_title": "Guanacaste Airport",
+        "country": "CR",
+        "international": true
+      },
+      {
+        "iata": "NRT",
+        "city": "Tokyo",
+        "wiki_title": "Narita International Airport",
+        "country": "JP",
+        "international": true
+      },
+      {
+        "iata": "OGG",
+        "city": "Kahului",
+        "wiki_title": "Kahului Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ORD",
+        "city": "Chicago",
+        "wiki_title": "O'Hare International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PEK",
+        "city": "Beijing",
+        "wiki_title": "Beijing Capital International Airport",
+        "country": "CN",
+        "international": true
+      },
+      {
+        "iata": "PHX",
+        "city": "Phoenix",
+        "wiki_title": "Phoenix Sky Harbor International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PIT",
+        "city": "Pittsburgh",
+        "wiki_title": "Pittsburgh International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PVG",
+        "city": "Shanghai",
+        "wiki_title": "Shanghai Pudong International Airport",
+        "country": "CN",
+        "international": true
+      },
+      {
+        "iata": "PVR",
+        "city": "Puerto Vallarta",
+        "wiki_title": "Licenciado Gustavo D\u00edaz Ordaz International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "RSW",
+        "city": "Fort Myers",
+        "wiki_title": "Southwest Florida International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SAL",
+        "city": "Santa Clara",
+        "wiki_title": "El Salvador International Airport",
+        "country": "SV",
+        "international": true
+      },
+      {
+        "iata": "SEA",
+        "city": "Seattle",
+        "wiki_title": "Seattle\u2013Tacoma International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SFO",
+        "city": "San Francisco",
+        "wiki_title": "San Francisco International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SGN",
+        "city": "Ho Chi Minh City",
+        "wiki_title": "Tan Son Nhat International Airport",
+        "country": "VN",
+        "international": true
+      },
+      {
+        "iata": "SJD",
+        "city": "San Jose del Cabo",
+        "wiki_title": "Los Cabos International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "SJO",
+        "city": "San Jose",
+        "wiki_title": "Juan Santamar\u00eda International Airport",
+        "country": "CR",
+        "international": true
+      },
+      {
+        "iata": "SYD",
+        "city": "Sydney",
+        "wiki_title": "Sydney Airport",
+        "country": "AU",
+        "international": true
+      },
+      {
+        "iata": "TPA",
+        "city": "Tampa",
+        "wiki_title": "Tampa International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "YVR",
+        "city": "Richmond",
+        "wiki_title": "Vancouver International Airport",
+        "country": "CA",
+        "international": true
+      }
+    ]
+  },
+  "IAH": {
+    "hub": "IAH",
+    "source": "https://en.wikipedia.org/wiki/George_Bush_Intercontinental_Airport",
+    "destinations": [
+      {
+        "iata": "AMS",
+        "city": "Amsterdam",
+        "wiki_title": "Amsterdam Airport Schiphol",
+        "country": "NL",
+        "international": true
+      },
+      {
+        "iata": "ANC",
+        "city": "Anchorage",
+        "wiki_title": "Ted Stevens Anchorage International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ATL",
+        "city": "Atlanta",
+        "wiki_title": "Hartsfield\u2013Jackson Atlanta International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "AUA",
+        "city": "Oranjestad",
+        "wiki_title": "Queen Beatrix International Airport",
+        "country": "AW",
+        "international": true
+      },
+      {
+        "iata": "AUS",
+        "city": "Austin",
+        "wiki_title": "Austin\u2013Bergstrom International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BDL",
+        "city": "Windsor Locks",
+        "wiki_title": "Bradley International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BJX",
+        "city": "Silao",
+        "wiki_title": "Baj\u00edo International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "BNA",
+        "city": "Nashville",
+        "wiki_title": "Nashville International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BOG",
+        "city": "Bogota",
+        "wiki_title": "El Dorado International Airport",
+        "country": "CO",
+        "international": true
+      },
+      {
+        "iata": "BON",
+        "city": "Kralendijk",
+        "wiki_title": "Flamingo International Airport",
+        "country": "BQ",
+        "international": true
+      },
+      {
+        "iata": "BOS",
+        "city": "Boston",
+        "wiki_title": "Logan International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BWI",
+        "city": "Baltimore",
+        "wiki_title": "Baltimore/Washington International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "BZE",
+        "city": "Belize City",
+        "wiki_title": "Philip S. W. Goldson International Airport",
+        "country": "BZ",
+        "international": true
+      },
+      {
+        "iata": "BZN",
+        "city": "Bozeman",
+        "wiki_title": "Bozeman Yellowstone International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CHS",
+        "city": "Charleston",
+        "wiki_title": "Charleston International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CLE",
+        "city": "Cleveland",
+        "wiki_title": "Cleveland Hopkins International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CLT",
+        "city": "Charlotte",
+        "wiki_title": "Charlotte Douglas International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CMH",
+        "city": "Columbus",
+        "wiki_title": "John Glenn Columbus International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CUN",
+        "city": "Cancun",
+        "wiki_title": "Canc\u00fan International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "CVG",
+        "city": "Covington",
+        "wiki_title": "Cincinnati/Northern Kentucky International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "CZM",
+        "city": "Cozumel",
+        "wiki_title": "Cozumel International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "DCA",
+        "city": "Washington",
+        "wiki_title": "Ronald Reagan Washington National Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DEN",
+        "city": "Denver",
+        "wiki_title": "Denver International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DFW",
+        "city": "Dallas-Fort Worth",
+        "wiki_title": "Dallas Fort Worth International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DRO",
+        "city": "Durango",
+        "wiki_title": "Durango\u2013La Plata County Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DSM",
+        "city": "Des Moines",
+        "wiki_title": "Des Moines International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "DTW",
+        "city": "Detroit",
+        "wiki_title": "Detroit Metropolitan Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "EGE",
+        "city": "Eagle",
+        "wiki_title": "Eagle County Regional Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "EWR",
+        "city": "Newark",
+        "wiki_title": "Newark Liberty International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "EZE",
+        "city": "Ezeiza",
+        "wiki_title": "Ministro Pistarini International Airport",
+        "country": "AR",
+        "international": true
+      },
+      {
+        "iata": "FCA",
+        "city": "Kalispell",
+        "wiki_title": "Glacier Park International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "FLL",
+        "city": "Fort Lauderdale",
+        "wiki_title": "Fort Lauderdale\u2013Hollywood International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "FRA",
+        "city": "Frankfurt am Main",
+        "wiki_title": "Frankfurt Airport",
+        "country": "DE",
+        "international": true
+      },
+      {
+        "iata": "GCM",
+        "city": "Georgetown",
+        "wiki_title": "Owen Roberts International Airport",
+        "country": "KY",
+        "international": true
+      },
+      {
+        "iata": "GDL",
+        "city": "Guadalajara",
+        "wiki_title": "Guadalajara International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "GEG",
+        "city": "Spokane",
+        "wiki_title": "Spokane International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "GEO",
+        "city": "Georgetown",
+        "wiki_title": "Cheddi Jagan International Airport",
+        "country": "GY",
+        "international": true
+      },
+      {
+        "iata": "GIG",
+        "city": "Rio De Janeiro",
+        "wiki_title": "Rio de Janeiro/Gale\u00e3o International Airport",
+        "country": "BR",
+        "international": true
+      },
+      {
+        "iata": "GRU",
+        "city": "Sao Paulo",
+        "wiki_title": "S\u00e3o Paulo/Guarulhos International Airport",
+        "country": "BR",
+        "international": true
+      },
+      {
+        "iata": "GSJ",
+        "city": "Puerto San Jose",
+        "wiki_title": "San Jose International Airport",
+        "country": "GT",
+        "international": true
+      },
+      {
+        "iata": "GSP",
+        "city": "Greer",
+        "wiki_title": "Greenville\u2013Spartanburg International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "GUA",
+        "city": "Guatemala City",
+        "wiki_title": "La Aurora International Airport",
+        "country": "GT",
+        "international": true
+      },
+      {
+        "iata": "HNL",
+        "city": "Honolulu",
+        "wiki_title": "Daniel K. Inouye International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IAD",
+        "city": "Washington",
+        "wiki_title": "Dulles International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ICT",
+        "city": "Wichita",
+        "wiki_title": "Wichita Dwight D. Eisenhower National Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "IND",
+        "city": "Indianapolis",
+        "wiki_title": "Indianapolis International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "JAC",
+        "city": "Jackson",
+        "wiki_title": "Jackson Hole Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "JAX",
+        "city": "Jacksonville",
+        "wiki_title": "Jacksonville International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LAS",
+        "city": "Las Vegas",
+        "wiki_title": "Harry Reid International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LAX",
+        "city": "Los Angeles",
+        "wiki_title": "Los Angeles International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LGA",
+        "city": "New York",
+        "wiki_title": "LaGuardia Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "LHR",
+        "city": "London",
+        "wiki_title": "Heathrow Airport",
+        "country": "GB",
+        "international": true
+      },
+      {
+        "iata": "LIM",
+        "city": "Lima",
+        "wiki_title": "Jorge Ch\u00e1vez International Airport",
+        "country": "PE",
+        "international": true
+      },
+      {
+        "iata": "MBJ",
+        "city": "Montego Bay",
+        "wiki_title": "Sangster International Airport",
+        "country": "JM",
+        "international": true
+      },
+      {
+        "iata": "MCI",
+        "city": "Kansas City",
+        "wiki_title": "Kansas City International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MCO",
+        "city": "Orlando",
+        "wiki_title": "Orlando International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MDE",
+        "city": "Rionegro",
+        "wiki_title": "Jos\u00e9 Mar\u00eda C\u00f3rdova International Airport",
+        "country": "CO",
+        "international": true
+      },
+      {
+        "iata": "MEM",
+        "city": "Memphis",
+        "wiki_title": "Memphis International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MEX",
+        "city": "Mexico City",
+        "wiki_title": "Mexico City International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "MFE",
+        "city": "Mc Allen",
+        "wiki_title": "McAllen Miller International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MGA",
+        "city": "Managua",
+        "wiki_title": "Augusto C. Sandino International Airport",
+        "country": "NI",
+        "international": true
+      },
+      {
+        "iata": "MIA",
+        "city": "Miami",
+        "wiki_title": "Miami International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MID",
+        "city": "Merida",
+        "wiki_title": "M\u00e9rida International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "MSP",
+        "city": "Minneapolis",
+        "wiki_title": "Minneapolis\u2013Saint Paul International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MSY",
+        "city": "New Orleans",
+        "wiki_title": "Louis Armstrong New Orleans International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MTJ",
+        "city": "Montrose",
+        "wiki_title": "Montrose Regional Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "MTY",
+        "city": "Monterrey",
+        "wiki_title": "Monterrey International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "MUC",
+        "city": "Munich",
+        "wiki_title": "Munich Airport",
+        "country": "DE",
+        "international": true
+      },
+      {
+        "iata": "NAS",
+        "city": "Nassau",
+        "wiki_title": "Lynden Pindling International Airport",
+        "country": "BS",
+        "international": true
+      },
+      {
+        "iata": "NRT",
+        "city": "Tokyo",
+        "wiki_title": "Narita International Airport",
+        "country": "JP",
+        "international": true
+      },
+      {
+        "iata": "ONO",
+        "city": "Ontario",
+        "wiki_title": "Ontario International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "ORD",
+        "city": "Chicago",
+        "wiki_title": "O'Hare International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PBI",
+        "city": "West Palm Beach",
+        "wiki_title": "Palm Beach International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PDX",
+        "city": "Portland",
+        "wiki_title": "Portland International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PHL",
+        "city": "Philadelphia",
+        "wiki_title": "Philadelphia International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PHX",
+        "city": "Phoenix",
+        "wiki_title": "Phoenix Sky Harbor International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PIT",
+        "city": "Pittsburgh",
+        "wiki_title": "Pittsburgh International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "PLS",
+        "city": "Providenciales Island",
+        "wiki_title": "Providenciales International Airport",
+        "country": "TC",
+        "international": true
+      },
+      {
+        "iata": "PNS",
+        "city": "Pensacola",
+        "wiki_title": "Pensacola International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "POS",
+        "city": "Port of Spain",
+        "wiki_title": "Piarco International Airport",
+        "country": "TT",
+        "international": true
+      },
+      {
+        "iata": "PTY",
+        "city": "Tocumen",
+        "wiki_title": "Tocumen International Airport",
+        "country": "PA",
+        "international": true
+      },
+      {
+        "iata": "PUJ",
+        "city": "Punta Cana",
+        "wiki_title": "Punta Cana International Airport",
+        "country": "DO",
+        "international": true
+      },
+      {
+        "iata": "PVR",
+        "city": "Puerto Vallarta",
+        "wiki_title": "Licenciado Gustavo D\u00edaz Ordaz International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "QRO",
+        "city": "Queretaro",
+        "wiki_title": "Quer\u00e9taro Intercontinental Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "RDU",
+        "city": "Raleigh/Durham",
+        "wiki_title": "Raleigh\u2013Durham International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "RNO",
+        "city": "Reno",
+        "wiki_title": "Reno\u2013Tahoe International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "RSW",
+        "city": "Fort Myers",
+        "wiki_title": "Southwest Florida International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "RTB",
+        "city": "Roatan Island",
+        "wiki_title": "Juan Manuel G\u00e1lvez International Airport",
+        "country": "HN",
+        "international": true
+      },
+      {
+        "iata": "SAL",
+        "city": "Santa Clara",
+        "wiki_title": "El Salvador International Airport",
+        "country": "SV",
+        "international": true
+      },
+      {
+        "iata": "SAN",
+        "city": "San Diego",
+        "wiki_title": "San Diego International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SAP",
+        "city": "La Mesa",
+        "wiki_title": "Ram\u00f3n Villeda Morales International Airport",
+        "country": "HN",
+        "international": true
+      },
+      {
+        "iata": "SAT",
+        "city": "San Antonio",
+        "wiki_title": "San Antonio International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SCL",
+        "city": "Santiago",
+        "wiki_title": "Arturo Merino Ben\u00edtez International Airport",
+        "country": "CL",
+        "international": true
+      },
+      {
+        "iata": "SEA",
+        "city": "Seattle",
+        "wiki_title": "Seattle\u2013Tacoma International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SFO",
+        "city": "San Francisco",
+        "wiki_title": "San Francisco International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SJD",
+        "city": "San Jose del Cabo",
+        "wiki_title": "Los Cabos International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "SJO",
+        "city": "San Jose",
+        "wiki_title": "Juan Santamar\u00eda International Airport",
+        "country": "CR",
+        "international": true
+      },
+      {
+        "iata": "SJU",
+        "city": "San Juan",
+        "wiki_title": "Luis Mu\u00f1oz Mar\u00edn International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SLC",
+        "city": "Salt Lake City",
+        "wiki_title": "Salt Lake City International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SLP",
+        "city": "San Luis Potosi",
+        "wiki_title": "San Luis Potos\u00ed International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "SMF",
+        "city": "Sacramento",
+        "wiki_title": "Sacramento International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SNA",
+        "city": "Santa Ana",
+        "wiki_title": "John Wayne Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "STL",
+        "city": "St Louis",
+        "wiki_title": "St. Louis Lambert International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "STT",
+        "city": "Charlotte Amalie",
+        "wiki_title": "Cyril E. King Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "SYD",
+        "city": "Sydney",
+        "wiki_title": "Sydney Airport",
+        "country": "AU",
+        "international": true
+      },
+      {
+        "iata": "TAM",
+        "city": "Tampico",
+        "wiki_title": "Tampico International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "TPA",
+        "city": "Tampa",
+        "wiki_title": "Tampa International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "TQO",
+        "city": "Tulum",
+        "wiki_title": "Tulum International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "TUL",
+        "city": "Tulsa",
+        "wiki_title": "Tulsa International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "TUS",
+        "city": "Tucson",
+        "wiki_title": "Tucson International Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "UIO",
+        "city": "Quito",
+        "wiki_title": "Mariscal Sucre International Airport",
+        "country": "EC",
+        "international": true
+      },
+      {
+        "iata": "VER",
+        "city": "Veracruz",
+        "wiki_title": "Veracruz International Airport",
+        "country": "MX",
+        "international": true
+      },
+      {
+        "iata": "XNA",
+        "city": "Fayetteville/Springdale/Rogers",
+        "wiki_title": "Northwest Arkansas National Airport",
+        "country": "US",
+        "international": false
+      },
+      {
+        "iata": "XPL",
+        "city": "Comayagua",
+        "wiki_title": "Comayagua International Airport",
+        "country": "HN",
+        "international": true
+      },
+      {
+        "iata": "YEG",
+        "city": "Edmonton",
+        "wiki_title": "Edmonton International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "YVR",
+        "city": "Richmond",
+        "wiki_title": "Vancouver International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "YYC",
+        "city": "Calgary",
+        "wiki_title": "Calgary International Airport",
+        "country": "CA",
+        "international": true
+      },
+      {
+        "iata": "YYZ",
+        "city": "Mississauga",
+        "wiki_title": "Toronto Pearson International Airport",
+        "country": "CA",
+        "international": true
+      }
+    ]
+  }
+}

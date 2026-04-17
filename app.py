@@ -3,9 +3,12 @@ import asyncio
 import json
 import logging
 import sys
+import threading
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 from collections import deque
+from queue import Queue, Empty
 
 # ─── Custom log handler that captures messages for the UI ───
 class StreamlitLogHandler(logging.Handler):
@@ -38,12 +41,22 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 from scraper.browser import BrowserManager
-from scraper.hub_discovery import KNOWN_UA_ROUTES
 from scraper.route_discovery import auto_discover_flights
 from scraper.flight_scraper import scrape_flight
 from scraper.rate_limiter import AdaptiveRateLimiter
 from scraper.models import FlightData
 from scraper.main import load_latest_data, save_latest_data
+
+
+HUB_DESTINATIONS_FILE = Path("config/hub_destinations.json")
+
+
+def load_hub_destinations() -> dict:
+    """Load the static list of destinations per hub scraped from united.com
+    marketing pages. Regenerate via scripts/fetch_hub_destinations.py."""
+    if HUB_DESTINATIONS_FILE.exists():
+        return json.loads(HUB_DESTINATIONS_FILE.read_text())
+    return {}
 
 st.set_page_config(
     page_title="Northstar — United Availability",
@@ -82,10 +95,12 @@ with st.sidebar:
     st.markdown("### Settings")
     show_browser = st.checkbox(
         "Show browser window",
-        value=False,
-        help="Open visible browser for debugging"
+        value=True,
+        help="United blocks headless browsers — leave this on.",
     )
     headless = not show_browser
+    if headless:
+        st.warning("⚠️ Headless mode is blocked by United. Expect timeouts.")
 
     st.markdown("---")
     st.markdown("### How it works")
@@ -184,12 +199,26 @@ async def run_scrape_routes(
     routes: list[tuple[str, str]],
     dates: list[datetime],
     headless: bool = True,
+    on_progress=None,
+    stop_event: threading.Event | None = None,
 ):
     """Discover flights + scrape availability for routes across multiple dates.
 
     For each route × date, discovers flight numbers then scrapes each one.
     Reuses a single browser session across all routes and dates.
+
+    Progress is emitted via both the logger AND an optional on_progress callback
+    (called from the scraping thread). A threading.Event can be used to stop
+    after the current flight.
     """
+    def emit(msg: str, level: str = "info"):
+        getattr(logger, level)(msg)
+        if on_progress:
+            on_progress(msg)
+
+    def should_stop() -> bool:
+        return stop_event is not None and stop_event.is_set()
+
     browser = BrowserManager(headless=headless, context_ttl=15)
     limiter = AdaptiveRateLimiter(base_min=3, base_max=6)
     latest_data = load_latest_data()
@@ -200,31 +229,43 @@ async def run_scrape_routes(
     total_tasks = len(routes) * len(dates)
     task_num = 0
 
+    emit(f"🚀 Starting scrape: {len(routes)} route(s) × {len(dates)} day(s) = {total_tasks} task(s)")
+    emit(f"🌐 Launching browser (headless={headless})...")
     await browser.start()
 
     try:
         for orig, dest in routes:
+            if should_stop():
+                emit("⛔ Stop requested — aborting.", level="warning")
+                break
             route_key = f"{orig}-{dest}"
 
             for date in dates:
+                if should_stop():
+                    emit("⛔ Stop requested — aborting.", level="warning")
+                    break
                 task_num += 1
                 date_str = date.strftime("%Y-%m-%d")
                 day_name = date.strftime("%a")
 
-                logger.info(f"[{task_num}/{total_tasks}] Discovering {route_key} on {date_str} ({day_name})...")
+                emit(f"[{task_num}/{total_tasks}] 🔎 Discovering {route_key} on {date_str} ({day_name})...")
 
                 nonstop_flights, _ = await auto_discover_flights(browser, orig, dest, date)
 
                 if not nonstop_flights:
-                    logger.warning(f"  {route_key} {date_str}: no UA nonstop flights found")
+                    emit(f"  ⚠️ {route_key} {date_str}: no UA nonstop flights found", level="warning")
                     continue
 
-                logger.info(f"  {route_key} {date_str}: found {len(nonstop_flights)} flights, scraping...")
+                emit(f"  ✈️ {route_key} {date_str}: found {len(nonstop_flights)} flight(s), scraping...")
 
                 for flight_num in nonstop_flights:
+                    if should_stop():
+                        emit("⛔ Stop requested — aborting.", level="warning")
+                        break
                     flight_key = f"UA{flight_num}_{date_str}"
                     await limiter.wait()
 
+                    emit(f"    → UA{flight_num} {date_str}: scraping...")
                     result = await scrape_flight(browser, flight_num, date, orig, dest)
 
                     if result:
@@ -234,7 +275,7 @@ async def run_scrape_routes(
                             "flight_data": result.to_dict(),
                             "last_scraped": run_timestamp,
                         }
-                        logger.info(
+                        emit(
                             f"    ✓ UA{flight_num} {date_str}: "
                             f"J {result.polaris_available}/{result.polaris_capacity} "
                             f"(Δ{result.polaris_delta:+d}) | "
@@ -244,15 +285,134 @@ async def run_scrape_routes(
                         )
                     else:
                         limiter.record_failure()
-                        logger.warning(f"    ✗ UA{flight_num} {date_str}: scrape failed")
+                        emit(f"    ✗ UA{flight_num} {date_str}: scrape failed", level="warning")
 
         latest_data["last_updated"] = run_timestamp
         save_latest_data(latest_data)
+        emit(f"💾 Saved {len(all_flights)} flight(s) to latest.json")
 
     finally:
         await browser.stop()
+        emit("👋 Browser shut down")
 
     return all_flights
+
+
+# ─── Background scrape state (shared across tabs) ───
+def get_scrape_state() -> dict:
+    if "scrape" not in st.session_state:
+        st.session_state.scrape = {
+            "status": "idle",       # idle | running | complete | empty | error
+            "log": [],
+            "results": None,
+            "queue": None,
+            "stop_event": None,
+            "thread": None,
+            "origin": None,         # "hub" or "cp"
+        }
+    return st.session_state.scrape
+
+
+def start_scrape_thread(routes, dates, headless, origin: str):
+    state = get_scrape_state()
+
+    # Guard: don't start a second job on top of a running one
+    if state["status"] == "running":
+        return
+
+    state["status"] = "running"
+    state["log"] = []
+    state["results"] = None
+    state["queue"] = Queue()
+    state["stop_event"] = threading.Event()
+    state["origin"] = origin
+
+    q = state["queue"]
+    stop_event = state["stop_event"]
+
+    def worker():
+        async def _run():
+            results = await run_scrape_routes(
+                routes, dates,
+                headless=headless,
+                on_progress=lambda m: q.put(("LOG", m)),
+                stop_event=stop_event,
+            )
+            q.put(("DONE", results))
+
+        try:
+            asyncio.run(_run())
+        except Exception as e:
+            q.put(("ERROR", f"{type(e).__name__}: {e}"))
+
+    t = threading.Thread(target=worker, daemon=True)
+    t.start()
+    state["thread"] = t
+
+
+def drain_scrape_queue():
+    state = get_scrape_state()
+    q = state.get("queue")
+    if q is None:
+        return
+    while True:
+        try:
+            kind, payload = q.get_nowait()
+        except Empty:
+            break
+        if kind == "LOG":
+            state["log"].append(payload)
+        elif kind == "DONE":
+            state["results"] = payload
+            state["status"] = "complete" if payload else "empty"
+            if state["origin"] == "hub":
+                st.session_state["hub_results"] = payload or []
+            elif state["origin"] == "cp":
+                st.session_state["cp_results"] = payload or []
+        elif kind == "ERROR":
+            state["log"].append(f"❌ ERROR: {payload}")
+            state["status"] = "error"
+
+
+def render_scrape_live() -> bool:
+    """Render live scrape status (stop button + log). Returns True if still running."""
+    state = get_scrape_state()
+    drain_scrape_queue()
+
+    if state["status"] == "idle":
+        return False
+
+    running = state["status"] == "running"
+
+    header_col, btn_col = st.columns([4, 1])
+    with header_col:
+        if running:
+            st.info(f"⏳ Scraping… {len(state['log'])} event(s) logged")
+        elif state["status"] == "complete":
+            st.success(f"✅ Done — {len(state['results'] or [])} flight(s) scraped")
+        elif state["status"] == "empty":
+            st.warning("No flight data captured.")
+        elif state["status"] == "error":
+            st.error("❌ Scrape failed — see log below.")
+
+    with btn_col:
+        if running:
+            if st.button("⛔ Stop", key="scrape_stop_btn", use_container_width=True):
+                state["stop_event"].set()
+                state["log"].append("⛔ Stop signal sent — finishing current flight...")
+        else:
+            if st.button("Clear", key="scrape_clear_btn", use_container_width=True):
+                state["status"] = "idle"
+                state["log"] = []
+                st.rerun()
+
+    # Live log — expanded while running, collapsed when done (to keep results prominent)
+    log_text = "\n".join(state["log"][-500:]) if state["log"] else "(starting…)"
+    log_label = f"📋 Live log ({len(state['log'])} events)"
+    with st.expander(log_label, expanded=running):
+        st.code(log_text, language="text")
+
+    return running
 
 
 # ─── Tabs ───
@@ -261,92 +421,117 @@ tab_hub, tab_citypair = st.tabs(["🔍 Browse Hub Routes", "✈️ City Pair"])
 
 # ─── Tab 1: Hub Routes ───
 with tab_hub:
-    st.markdown("Pick a hub and select destinations to scrape. "
-                "These are known UA-operated Polaris routes (codeshares excluded).")
+    hub_data = load_hub_destinations()
 
-    col1, col2 = st.columns([1, 3])
-    with col1:
-        hubs = sorted(KNOWN_UA_ROUTES.keys())
-        hub_airport = st.selectbox("Hub", hubs, index=hubs.index("LAX") if "LAX" in hubs else 0)
+    if not hub_data:
+        st.warning(
+            "No hub destination list found. "
+            "Run `python scripts/fetch_hub_destinations.py` "
+            "to build `config/hub_destinations.json`."
+        )
+    else:
+        st.markdown(
+            "Destinations sourced from each hub's Wikipedia airport page — "
+            "full UA route list including seasonal."
+        )
 
-    with col2:
-        st.markdown("**Days to check**")
-        day_cols = st.columns(5)
-        hub_days = []
-        for i in range(5):
-            with day_cols[i]:
-                checked = i == 1  # Default: tomorrow
-                if st.checkbox(get_day_label(i), value=checked, key=f"hub_day_{i}"):
-                    hub_days.append(i)
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            hubs = sorted(hub_data.keys())
+            default_idx = hubs.index("EWR") if "EWR" in hubs else 0
+            hub_airport = st.selectbox("Hub", hubs, index=default_idx, key="hub_select")
 
-    # Show known routes grouped by region
-    known = KNOWN_UA_ROUTES.get(hub_airport, {})
-    if known:
-        st.markdown(f"### Routes from {hub_airport}")
+        with col2:
+            st.markdown("**Days to check**")
+            day_cols = st.columns(5)
+            hub_days = []
+            for i in range(5):
+                with day_cols[i]:
+                    checked = i == 1  # Default: tomorrow
+                    if st.checkbox(get_day_label(i), value=checked, key=f"hub_day_{i}"):
+                        hub_days.append(i)
+
+        raw_destinations = hub_data[hub_airport].get("destinations", [])
+        # Backwards-compat: old schema had list[str]; new schema is list[dict]
+        if raw_destinations and isinstance(raw_destinations[0], str):
+            raw_destinations = [{"iata": d, "city": d, "country": "?",
+                                 "international": True} for d in raw_destinations]
+
+        intl_only = st.toggle(
+            "🌍 International only (Polaris routes)",
+            value=True,
+            key=f"intl_only_{hub_airport}",
+            help="Hide domestic routes — Polaris business class is long-haul only.",
+        )
+
+        destinations = [d for d in raw_destinations
+                        if d.get("international", True)] if intl_only else raw_destinations
+
+        # Group by country for readability when showing international
+        intl_count = sum(1 for d in raw_destinations if d.get("international"))
+        dom_count = len(raw_destinations) - intl_count
+        st.markdown(
+            f"### Destinations from {hub_airport} — "
+            f"showing {len(destinations)} "
+            f"({intl_count} intl + {dom_count} dom total)"
+        )
+
+        col_a, col_b = st.columns([1, 1])
+        with col_a:
+            if st.button("Select all shown", key="hub_select_all", use_container_width=True):
+                for d in destinations:
+                    st.session_state[f"dest_{hub_airport}_{d['iata']}"] = True
+                st.rerun()
+        with col_b:
+            if st.button("Clear selection", key="hub_clear", use_container_width=True):
+                for d in raw_destinations:
+                    st.session_state[f"dest_{hub_airport}_{d['iata']}"] = False
+                st.rerun()
 
         selected_dests = []
-        for region, destinations in known.items():
-            region_label = region.replace("_", " ").title()
-            st.markdown(f"**{region_label}**")
+        cols_per_row = 6
+        cols = st.columns(cols_per_row)
+        for i, dest in enumerate(destinations):
+            with cols[i % cols_per_row]:
+                label = f"**{dest['iata']}** — {dest['city']}"
+                if st.checkbox(label, key=f"dest_{hub_airport}_{dest['iata']}"):
+                    selected_dests.append(dest['iata'])
 
-            cols = st.columns(min(len(destinations), 6))
-            for i, dest in enumerate(destinations):
-                with cols[i % len(cols)]:
-                    if st.checkbox(dest, key=f"hub_{hub_airport}_{dest}"):
-                        selected_dests.append(dest)
+        # ─── Always-visible start button ───
+        scrape_state = get_scrape_state()
+        is_running = scrape_state["status"] == "running"
+        scrape_disabled = is_running or not (selected_dests and hub_days)
+        if is_running:
+            btn_label = "⏳ Scrape in progress..."
+        elif selected_dests and hub_days:
+            btn_label = (
+                f"🚀 Scrape {len(selected_dests)} route"
+                f"{'s' if len(selected_dests) != 1 else ''} × {len(hub_days)} day"
+                f"{'s' if len(hub_days) != 1 else ''}"
+            )
+        else:
+            btn_label = "🚀 Select at least one destination and one day"
 
-        if selected_dests and hub_days:
+        scrape_btn = st.button(
+            btn_label,
+            key="hub_scrape",
+            use_container_width=True,
+            type="primary",
+            disabled=scrape_disabled,
+        )
+
+        if selected_dests and hub_days and not is_running:
             route_list = ', '.join(f'{hub_airport}-{d}' for d in selected_dests)
             day_list = ', '.join(get_day_label(d) for d in hub_days)
-            st.markdown(f"**Selected:** {route_list} | **Days:** {day_list}")
+            st.caption(f"Selected: {route_list} | Days: {day_list}")
 
-            scrape_btn = st.button(
-                f"🚀 Scrape {len(selected_dests)} route{'s' if len(selected_dests) != 1 else ''} × {len(hub_days)} day{'s' if len(hub_days) != 1 else ''}",
-                key="hub_scrape",
-                use_container_width=True
-            )
-
-            if scrape_btn:
-                routes = [(hub_airport, d) for d in selected_dests]
-                dates = [datetime.combine(datetime.now().date() + timedelta(days=d), datetime.min.time())
-                         for d in hub_days]
-                log_handler.clear()
-
-                with st.status(
-                    f"Scraping {len(routes)} routes × {len(dates)} days from {hub_airport}...",
-                    expanded=True
-                ) as status_widget:
-                    st.write(f"Routes: {route_list}")
-                    st.write(f"Days: {day_list}")
-                    st.write(f"Total: {len(routes) * len(dates)} route-days. ~30s per route-day. Watch the log below.")
-
-                    try:
-                        results = asyncio.run(
-                            run_scrape_routes(routes, dates, headless=headless)
-                        )
-                        if results:
-                            status_widget.update(
-                                label=f"Done! Scraped {len(results)} flights.",
-                                state="complete"
-                            )
-                            st.session_state['hub_results'] = results
-                        else:
-                            status_widget.update(label="No data captured", state="error")
-                    except Exception as e:
-                        status_widget.update(label=f"Error: {e}", state="error")
-                        st.exception(e)
-
-                show_log_expander()
-
-        elif selected_dests and not hub_days:
-            st.warning("Select at least one day to check.")
-
-        if 'hub_results' in st.session_state:
-            st.markdown("---")
-            st.markdown("### Results")
-            display_results(st.session_state['hub_results'])
-    else:
-        st.info(f"No curated routes for {hub_airport} yet. Use the City Pair tab instead.")
+        if scrape_btn and not scrape_disabled:
+            routes = [(hub_airport, d) for d in selected_dests]
+            dates = [datetime.combine(datetime.now().date() + timedelta(days=d),
+                     datetime.min.time()) for d in hub_days]
+            log_handler.clear()
+            start_scrape_thread(routes, dates, headless=headless, origin="hub")
+            st.rerun()
 
 
 # ─── Tab 2: City Pair ───
@@ -368,7 +553,15 @@ with tab_citypair:
             if st.checkbox(get_day_label(i), value=checked, key=f"cp_day_{i}"):
                 cp_days.append(i)
 
-    cp_btn = st.button("🚀 Scrape Route", key="cp_scrape", use_container_width=True)
+    scrape_state = get_scrape_state()
+    is_running = scrape_state["status"] == "running"
+    cp_btn = st.button(
+        "⏳ Scrape in progress..." if is_running else "🚀 Scrape Route",
+        key="cp_scrape",
+        use_container_width=True,
+        type="primary",
+        disabled=is_running,
+    )
 
     if cp_btn:
         if not cp_origin or not cp_dest or len(cp_origin) != 3 or len(cp_dest) != 3:
@@ -379,39 +572,41 @@ with tab_citypair:
             routes = [(cp_origin, cp_dest)]
             dates = [datetime.combine(datetime.now().date() + timedelta(days=d), datetime.min.time())
                      for d in cp_days]
-            day_list = ', '.join(get_day_label(d) for d in cp_days)
             log_handler.clear()
+            start_scrape_thread(routes, dates, headless=headless, origin="cp")
+            st.rerun()
 
-            with st.status(
-                f"Scraping {cp_origin}-{cp_dest} across {len(dates)} day{'s' if len(dates) != 1 else ''}...",
-                expanded=True
-            ) as status_widget:
-                st.write(f"Route: {cp_origin} → {cp_dest}")
-                st.write(f"Days: {day_list}")
 
-                try:
-                    results = asyncio.run(
-                        run_scrape_routes(routes, dates, headless=headless)
-                    )
-                    if results:
-                        status_widget.update(
-                            label=f"Scraped {len(results)} flights for {cp_origin}-{cp_dest}!",
-                            state="complete"
-                        )
-                        st.session_state['cp_results'] = results
-                    else:
-                        status_widget.update(label=f"No data for {cp_origin}-{cp_dest}", state="error")
-                        st.warning(
-                            f"No flight data captured. This could mean no UA nonstop flights "
-                            f"on this route, or the browser was blocked.\n\n"
-                            f"Try enabling **Show browser window** in the sidebar."
-                        )
-                except Exception as e:
-                    status_widget.update(label=f"Error: {e}", state="error")
-                    st.exception(e)
+# ─── Global live status panel (rendered once, below the tabs) ───
+_scrape_state = get_scrape_state()
+if _scrape_state["status"] != "idle":
+    st.markdown("---")
+    st.markdown("### Live scrape status")
+    render_scrape_live()
 
-            show_log_expander()
+# ─── Results panel (always visible when any results exist) ───
+if 'hub_results' in st.session_state or 'cp_results' in st.session_state:
+    st.markdown("---")
+    # Pick whichever is fresher — if a scrape just completed, use that tab's results
+    origin = _scrape_state.get("origin")
+    if origin == "cp" and 'cp_results' in st.session_state:
+        primary_key, primary_label = 'cp_results', "City Pair"
+        other_key, other_label = 'hub_results', "Hub Routes"
+    else:
+        primary_key, primary_label = 'hub_results', "Hub Routes"
+        other_key, other_label = 'cp_results', "City Pair"
 
-    if 'cp_results' in st.session_state:
-        st.markdown("---")
-        display_results(st.session_state['cp_results'])
+    st.markdown(f"## 📊 Results — {primary_label}")
+    if primary_key in st.session_state and st.session_state[primary_key]:
+        display_results(st.session_state[primary_key])
+    else:
+        st.info("No results yet.")
+
+    if other_key in st.session_state and st.session_state[other_key]:
+        with st.expander(f"📊 Previous {other_label} results", expanded=False):
+            display_results(st.session_state[other_key])
+
+# Auto-refresh while a scrape is running
+if _scrape_state["status"] == "running":
+    time.sleep(1.0)
+    st.rerun()
